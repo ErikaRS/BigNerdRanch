@@ -12,7 +12,7 @@ import android.util.Log;
 
 class CheatActivity extends Activity {
 	private static final String TAG = CheatActivity.class.toString();
-	
+
 	public static final String EXTRA_ANSWER = "com.erikars.geoquiz.answer";
 	public static final String EXTRA_ANSWER_SHOWN = "com.erikars.geoquiz.answer_shown";
 
@@ -20,7 +20,7 @@ class CheatActivity extends Activity {
 
 	private TextView mAnswerTextView;
 
-    private boolean mAnswer;
+	private boolean mAnswer;
 	private boolean mAnswerShown = false;
 
 	@Override
@@ -31,24 +31,24 @@ class CheatActivity extends Activity {
 		if (savedInstanceState != null) {
 			mAnswerShown = savedInstanceState.getBoolean(KEY_ANSWER_SHOWN, false);
 		}
-		Log.d(TAG,"onCreate() mAnswerShown: " + mAnswerShown);
+		Log.d(TAG, "onCreate() mAnswerShown: " + mAnswerShown);
 
 		mAnswer = getIntent().getBooleanExtra(EXTRA_ANSWER, false);
 		mAnswerTextView = (TextView) findViewById(R.id.answerTextView);
 
 		setAnswerShownResult();
-		
+
 		if (mAnswerShown) {
 			showAnswer();
-        }
+		}
 
-        Button mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
+		Button mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
 		mShowAnswerButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View unused) {
-                showAnswer();
-            }
-        });
+				@Override
+				public void onClick(View unused) {
+					showAnswer();
+				}
+			});
 	}
 
 	@Override
