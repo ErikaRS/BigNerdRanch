@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.PersistableBundle;
 import android.util.Log;
 
-public class CheatActivity extends Activity {
+class CheatActivity extends Activity {
 	private static final String TAG = CheatActivity.class.toString();
 	
 	public static final String EXTRA_ANSWER = "com.erikars.geoquiz.answer";
@@ -19,9 +19,8 @@ public class CheatActivity extends Activity {
 	private static final String KEY_ANSWER_SHOWN = "answer_shown";
 
 	private TextView mAnswerTextView;
-	private Button mShowAnswerButton;
 
-	private boolean mAnswer;
+    private boolean mAnswer;
 	private boolean mAnswerShown = false;
 
 	@Override
@@ -41,15 +40,15 @@ public class CheatActivity extends Activity {
 		
 		if (mAnswerShown) {
 			showAnswer();
-    }
+        }
 
-		mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
+        Button mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
 		mShowAnswerButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					showAnswer();
-				}
-	  	});
+            @Override
+            public void onClick(View unused) {
+                showAnswer();
+            }
+        });
 	}
 
 	@Override

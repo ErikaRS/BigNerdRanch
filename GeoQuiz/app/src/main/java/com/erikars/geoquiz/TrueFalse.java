@@ -1,6 +1,6 @@
 package com.erikars.geoquiz;
 
-public class TrueFalse {
+class TrueFalse {
 	private final int mQuestion;
 	private final boolean mAnswer;
 	
