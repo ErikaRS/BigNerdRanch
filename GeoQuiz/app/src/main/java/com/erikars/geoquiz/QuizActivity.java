@@ -15,21 +15,16 @@ import java.util.HashSet;
 import java.util.Set;
 import android.app.ActionBar;
 
-public class QuizActivity extends Activity {
+class QuizActivity extends Activity {
 	private static final String TAG = QuizActivity.class.toString();
 	
 	private static final String KEY_INDEX = "index";
 	private static final String KEY_CHEAT_QUESTIONS = "cheat_questions";
 
 	private TextView mQuestionTextView;
-	private Button mTrueButton;
-	private Button mFalseButton;
-	private Button mCheatButton;
-	private ImageButton mPrevButton;
-	private ImageButton mNextButton;
 
-	private final QuestionBank mQuestionBank = new QuestionBank();
-	private Set<Integer> mCheatQuestions = new HashSet<>();
+    private final QuestionBank mQuestionBank = new QuestionBank();
+	private final Set<Integer> mCheatQuestions = new HashSet<>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -55,50 +50,50 @@ public class QuizActivity extends Activity {
 				}
 	  	});
 
-		mTrueButton = (Button) findViewById(R.id.true_button);
+      Button mTrueButton = (Button) findViewById(R.id.true_button);
 		mTrueButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					showGrade(mQuestionBank.isCorrect(true));
-				}
-	  	});
+            @Override
+            public void onClick(View unused) {
+                showGrade(mQuestionBank.isCorrect(true));
+            }
+        });
 
-		mFalseButton = (Button) findViewById(R.id.false_button);
+      Button mFalseButton = (Button) findViewById(R.id.false_button);
 		mFalseButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					showGrade(mQuestionBank.isCorrect(false));
-				}
-	  	});
+            @Override
+            public void onClick(View unused) {
+                showGrade(mQuestionBank.isCorrect(false));
+            }
+        });
 
-		mCheatButton = (Button) findViewById(R.id.cheat_button);
+      Button mCheatButton = (Button) findViewById(R.id.cheat_button);
 		mCheatButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					Intent i = new Intent(QuizActivity.this, CheatActivity.class);
-					i.putExtra(CheatActivity.EXTRA_ANSWER, mQuestionBank.getAnswer());
-					startActivityForResult(i, 0);
-				}
-	  	});
-		
+            @Override
+            public void onClick(View unused) {
+                Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+                i.putExtra(CheatActivity.EXTRA_ANSWER, mQuestionBank.getAnswer());
+                startActivityForResult(i, 0);
+            }
+        });
 
-		mPrevButton = (ImageButton) findViewById(R.id.prev_button);
+
+      ImageButton mPrevButton = (ImageButton) findViewById(R.id.prev_button);
 		mPrevButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					mQuestionBank.decrementQuestion();
-					updateQuestion();
-				}
-	  	});
+            @Override
+            public void onClick(View unused) {
+                mQuestionBank.decrementQuestion();
+                updateQuestion();
+            }
+        });
 
-		mNextButton = (ImageButton) findViewById(R.id.next_button);
+      ImageButton mNextButton = (ImageButton) findViewById(R.id.next_button);
 		mNextButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					mQuestionBank.incrementQuestion();
-					updateQuestion();
-				}
-		  });
+            @Override
+            public void onClick(View unused) {
+                mQuestionBank.incrementQuestion();
+                updateQuestion();
+            }
+        });
   }
 
 	@Override

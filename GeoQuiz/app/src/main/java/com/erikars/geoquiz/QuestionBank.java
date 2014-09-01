@@ -1,6 +1,6 @@
 package com.erikars.geoquiz;
 
-public class QuestionBank {
+class QuestionBank {
 	private static final TrueFalse[] mQuestions = {
 		new TrueFalse(R.string.question_oceans, true),        
 		new TrueFalse(R.string.question_mideast, false),        
