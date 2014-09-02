@@ -42,8 +42,8 @@ class CheatActivity extends Activity {
 			showAnswer();
 		}
 
-		Button mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
-		mShowAnswerButton.setOnClickListener(new OnClickListener() {
+		Button showAnswerButton = (Button) findViewById(R.id.showAnswerButton);
+		showAnswerButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View unused) {
 					showAnswer();

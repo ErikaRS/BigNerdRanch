@@ -32,9 +32,6 @@ class QuizActivity extends Activity {
 		//Log.d(TAG, "onCreate(Bundle) called");
     setContentView(R.layout.activity_quiz);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setSubtitle("Bodies of water");
-
 		if (savedInstanceState != null) {
 		  mQuestionBank.advanceTo(savedInstanceState.getInt(KEY_INDEX, 0));
 		  mCheatQuestions.addAll(savedInstanceState.getIntegerArrayList(KEY_CHEAT_QUESTIONS));
@@ -50,24 +47,24 @@ class QuizActivity extends Activity {
 				}
 	  	});
 
-    Button mTrueButton = (Button) findViewById(R.id.true_button);
-		mTrueButton.setOnClickListener(new OnClickListener() {
+    Button trueButton = (Button) findViewById(R.id.true_button);
+		trueButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           showGrade(mQuestionBank.isCorrect(true));
         }
       });
 
-    Button mFalseButton = (Button) findViewById(R.id.false_button);
-		mFalseButton.setOnClickListener(new OnClickListener() {
+    Button falseButton = (Button) findViewById(R.id.false_button);
+		falseButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           showGrade(mQuestionBank.isCorrect(false));
         }
       });
 
-    Button mCheatButton = (Button) findViewById(R.id.cheat_button);
-		mCheatButton.setOnClickListener(new OnClickListener() {
+    Button cheatButton = (Button) findViewById(R.id.cheat_button);
+		cheatButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           Intent i = new Intent(QuizActivity.this, CheatActivity.class);
@@ -77,8 +74,8 @@ class QuizActivity extends Activity {
       });
 
 
-    ImageButton mPrevButton = (ImageButton) findViewById(R.id.prev_button);
-		mPrevButton.setOnClickListener(new OnClickListener() {
+    ImageButton prevButton = (ImageButton) findViewById(R.id.prev_button);
+		prevButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           mQuestionBank.decrementQuestion();
@@ -86,8 +83,8 @@ class QuizActivity extends Activity {
         }
       });
 
-    ImageButton mNextButton = (ImageButton) findViewById(R.id.next_button);
-		mNextButton.setOnClickListener(new OnClickListener() {
+    ImageButton nextButton = (ImageButton) findViewById(R.id.next_button);
+		nextButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           mQuestionBank.incrementQuestion();
