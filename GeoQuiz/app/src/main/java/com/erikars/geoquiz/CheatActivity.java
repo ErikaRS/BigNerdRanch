@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.PersistableBundle;
 import android.util.Log;
 
-class CheatActivity extends Activity {
+public class CheatActivity extends Activity {
 	private static final String TAG = CheatActivity.class.toString();
 
 	public static final String EXTRA_ANSWER = "com.erikars.geoquiz.answer";

@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import android.app.ActionBar;
 
-class QuizActivity extends Activity {
+public class QuizActivity extends Activity {
 	private static final String TAG = QuizActivity.class.toString();
 
 	private static final String KEY_INDEX = "index";
