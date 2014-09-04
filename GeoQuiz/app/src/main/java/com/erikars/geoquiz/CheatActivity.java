@@ -9,6 +9,7 @@ import android.view.View;
 import android.content.Intent;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.os.Build;
 
 public class CheatActivity extends Activity {
 	private static final String TAG = CheatActivity.class.toString();
@@ -49,6 +50,9 @@ public class CheatActivity extends Activity {
 					showAnswer();
 				}
 			});
+			
+		TextView buildVersionTextView = (TextView) findViewById(R.id.buildVersion);
+		buildVersionTextView.setText(getResources().getString(R.string.build_version, Build.VERSION.SDK));
 	}
 
 	@Override

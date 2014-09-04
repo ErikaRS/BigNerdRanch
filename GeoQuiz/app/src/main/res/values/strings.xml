@@ -14,6 +14,8 @@
 	<string name="show_answer_button">Show Answer</string> 
 	<string name="judgment_toast">Cheating is wrong.</string>
 	
+	<string name="build_version">Build version %1$s</string>
+	
 	<string name="question_oceans">The Pacific Ocean is larger than the Atlantic Ocean.</string> 
 	<string name="question_mideast">The Suez Canal connects the Red Sea and the Indian Ocean.</string>  
 	<string name="question_africa">The source of the Nile River is in Egypt.</string>  

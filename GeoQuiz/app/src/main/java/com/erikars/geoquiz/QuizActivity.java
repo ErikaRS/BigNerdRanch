@@ -2,6 +2,7 @@ package com.erikars.geoquiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import android.app.ActionBar;
 
 public class QuizActivity extends Activity {
 	private static final String TAG = QuizActivity.class.toString();
@@ -36,6 +36,9 @@ public class QuizActivity extends Activity {
 		  mQuestionBank.advanceTo(savedInstanceState.getInt(KEY_INDEX, 0));
 		  mCheatQuestions.addAll(savedInstanceState.getIntegerArrayList(KEY_CHEAT_QUESTIONS));
 		}
+		
+		TextView buildVersionTextView = (TextView) findViewById(R.id.build_version);
+		buildVersionTextView.setText(getResources().getString(R.string.build_version, Build.VERSION.SDK));
 
 		mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
 		updateQuestion();

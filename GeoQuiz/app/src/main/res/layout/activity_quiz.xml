@@ -10,7 +10,8 @@
 		android:id="@+id/question_text_view"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:padding="24dp" />
+		android:padding="24dp"
+		android:textSize="24sp"/>
 
 	<LinearLayout
 		android:layout_width="wrap_content"
@@ -59,6 +60,12 @@
 			android:contentDescription="@string/next_button"/>
 
 	</LinearLayout>
+	
+	<TextView
+		android:id="@+id/build_version"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:textSize="14sp"/>
 
 </LinearLayout>
 

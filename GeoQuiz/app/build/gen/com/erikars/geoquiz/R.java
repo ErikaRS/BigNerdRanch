@@ -17,13 +17,15 @@ public final class R {
     }
     public static final class id {
         public static final int answerTextView=0x7f050000;
-        public static final int cheat_button=0x7f050005;
-        public static final int false_button=0x7f050004;
-        public static final int next_button=0x7f050007;
-        public static final int prev_button=0x7f050006;
-        public static final int question_text_view=0x7f050002;
+        public static final int buildVersion=0x7f050002;
+        public static final int build_version=0x7f050009;
+        public static final int cheat_button=0x7f050006;
+        public static final int false_button=0x7f050005;
+        public static final int next_button=0x7f050008;
+        public static final int prev_button=0x7f050007;
+        public static final int question_text_view=0x7f050003;
         public static final int showAnswerButton=0x7f050001;
-        public static final int true_button=0x7f050003;
+        public static final int true_button=0x7f050004;
     }
     public static final class layout {
         public static final int activity_cheat=0x7f030000;
@@ -31,6 +33,7 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int build_version=0x7f04000b;
         public static final int cheat_button=0x7f040007;
         public static final int correct_toast=0x7f040005;
         public static final int false_button=0x7f040002;
@@ -38,11 +41,11 @@ public final class R {
         public static final int judgment_toast=0x7f04000a;
         public static final int next_button=0x7f040004;
         public static final int prev_button=0x7f040003;
-        public static final int question_africa=0x7f04000d;
-        public static final int question_americas=0x7f04000e;
-        public static final int question_asia=0x7f04000f;
-        public static final int question_mideast=0x7f04000c;
-        public static final int question_oceans=0x7f04000b;
+        public static final int question_africa=0x7f04000e;
+        public static final int question_americas=0x7f04000f;
+        public static final int question_asia=0x7f040010;
+        public static final int question_mideast=0x7f04000d;
+        public static final int question_oceans=0x7f04000c;
         public static final int show_answer_button=0x7f040009;
         public static final int true_button=0x7f040001;
         public static final int warning_text=0x7f040008;
