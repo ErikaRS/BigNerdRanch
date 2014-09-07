@@ -40,4 +40,9 @@ public class Crime {
 	public boolean isSolved() {
 		return mSolved;
 	}
+
+	@Override
+	public String toString() {
+		return mTitle;
+	}
 }
