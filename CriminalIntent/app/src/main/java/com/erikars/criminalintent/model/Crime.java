@@ -1,6 +1,8 @@
 package com.erikars.criminalintent.model;
 import java.util.UUID;
 import java.util.Date;
+import java.util.Locale;
+import android.text.format.DateFormat;
 
 public class Crime {
 	private final UUID mId;
@@ -31,6 +33,11 @@ public class Crime {
 
 	public Date getDate() {
 		return mDate;
+	}
+	
+	public String getFormattesDate() {
+		String format = DateFormat.getBestDateTimePattern(Locale.getDefault(), "EEEE, MMMM d, yyyy");
+		return DateFormat.format(format, getDate()).toString();
 	}
 
 	public void setSolved(boolean solved) {
