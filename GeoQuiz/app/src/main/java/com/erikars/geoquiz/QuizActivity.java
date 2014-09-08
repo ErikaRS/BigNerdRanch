@@ -17,43 +17,43 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class QuizActivity extends Activity {
-	private static final String TAG = QuizActivity.class.toString();
+  private static final String TAG = QuizActivity.class.toString();
 
-	private static final String KEY_INDEX = "index";
-	private static final String KEY_CHEAT_QUESTIONS = "cheat_questions";
+  private static final String KEY_INDEX = "index";
+  private static final String KEY_CHEAT_QUESTIONS = "cheat_questions";
 
-	private TextView mQuestionTextView;
+  private TextView mQuestionTextView;
 
   private final QuestionBank mQuestionBank = new QuestionBank();
-	private final Set<Integer> mCheatQuestions = new HashSet<>();
+  private final Set<Integer> mCheatQuestions = new HashSet<>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-		//Log.d(TAG, "onCreate(Bundle) called");
+    //Log.d(TAG, "onCreate(Bundle) called");
     setContentView(R.layout.activity_quiz);
 
-	  if (savedInstanceState != null) {
-	    mQuestionBank.advanceTo(savedInstanceState.getInt(KEY_INDEX, 0));
-	    mCheatQuestions.addAll(savedInstanceState.getIntegerArrayList(KEY_CHEAT_QUESTIONS));
-	  }
-		
-	  TextView buildVersionTextView = (TextView) findViewById(R.id.build_version);
-	  buildVersionTextView.setText(
+    if (savedInstanceState != null) {
+      mQuestionBank.advanceTo(savedInstanceState.getInt(KEY_INDEX, 0));
+      mCheatQuestions.addAll(savedInstanceState.getIntegerArrayList(KEY_CHEAT_QUESTIONS));
+    }
+    
+    TextView buildVersionTextView = (TextView) findViewById(R.id.build_version);
+    buildVersionTextView.setText(
         getResources().getString(R.string.build_version, Build.VERSION.SDK_INT));
 
-	  mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-	  updateQuestion();
-	  mQuestionTextView.setOnClickListener(new OnClickListener() {
-	      @Override
-		    public void onClick(View unused) {
-		      mQuestionBank.incrementQuestion();
-		      updateQuestion();
-		    }
-	    });
+    mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+    updateQuestion();
+    mQuestionTextView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View unused) {
+          mQuestionBank.incrementQuestion();
+          updateQuestion();
+        }
+      });
 
       Button trueButton = (Button) findViewById(R.id.true_button);
-	  	trueButton.setOnClickListener(new OnClickListener() {
+      trueButton.setOnClickListener(new OnClickListener() {
           @Override
           public void onClick(View unused) {
             showGrade(mQuestionBank.isCorrect(true));
@@ -61,7 +61,7 @@ public class QuizActivity extends Activity {
         });
 
     Button falseButton = (Button) findViewById(R.id.false_button);
-		falseButton.setOnClickListener(new OnClickListener() {
+    falseButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           showGrade(mQuestionBank.isCorrect(false));
@@ -69,7 +69,7 @@ public class QuizActivity extends Activity {
       });
 
     Button cheatButton = (Button) findViewById(R.id.cheat_button);
-		cheatButton.setOnClickListener(new OnClickListener() {
+    cheatButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           Intent i = new Intent(QuizActivity.this, CheatActivity.class);
@@ -80,7 +80,7 @@ public class QuizActivity extends Activity {
 
 
     ImageButton prevButton = (ImageButton) findViewById(R.id.prev_button);
-		prevButton.setOnClickListener(new OnClickListener() {
+    prevButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           mQuestionBank.decrementQuestion();
@@ -89,7 +89,7 @@ public class QuizActivity extends Activity {
       });
 
     ImageButton nextButton = (ImageButton) findViewById(R.id.next_button);
-		nextButton.setOnClickListener(new OnClickListener() {
+    nextButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View unused) {
           mQuestionBank.incrementQuestion();
@@ -98,40 +98,40 @@ public class QuizActivity extends Activity {
       });
   }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		Log.i(TAG, "onSavedInstanceState");
-		outState.putInt(KEY_INDEX, mQuestionBank.getIndex());
-		outState.putIntegerArrayList(KEY_CHEAT_QUESTIONS, new ArrayList<Integer>(mCheatQuestions));
-	}
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    Log.i(TAG, "onSavedInstanceState");
+    outState.putInt(KEY_INDEX, mQuestionBank.getIndex());
+    outState.putIntegerArrayList(KEY_CHEAT_QUESTIONS, new ArrayList<Integer>(mCheatQuestions));
+  }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (data == null) {
-			return;
-		}
-		if (data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false)) {
-			mCheatQuestions.add(mQuestionBank.getQuestion());
-		}
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (data == null) {
+      return;
+    }
+    if (data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false)) {
+      mCheatQuestions.add(mQuestionBank.getQuestion());
+    }
 
-	}
+  }
 
-	private void updateQuestion() {
-		mQuestionTextView.setText(mQuestionBank.getQuestion());
-	}
+  private void updateQuestion() {
+    mQuestionTextView.setText(mQuestionBank.getQuestion());
+  }
 
-	private void showGrade(boolean isCorrect) {
-		int response = isCorrect
-			? R.string.correct_toast
-			: R.string.incorrect_toast;
-		if (mCheatQuestions.contains(mQuestionBank.getQuestion())) {
-			response = R.string.judgment_toast;
-		}
-		Toast.makeText(
-			QuizActivity.this,
-		  response,
-			Toast.LENGTH_SHORT).show();
-	}
+  private void showGrade(boolean isCorrect) {
+    int response = isCorrect
+      ? R.string.correct_toast
+      : R.string.incorrect_toast;
+    if (mCheatQuestions.contains(mQuestionBank.getQuestion())) {
+      response = R.string.judgment_toast;
+    }
+    Toast.makeText(
+      QuizActivity.this,
+      response,
+      Toast.LENGTH_SHORT).show();
+  }
 }
