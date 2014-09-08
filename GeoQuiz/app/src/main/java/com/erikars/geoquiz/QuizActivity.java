@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,31 +33,32 @@ public class QuizActivity extends Activity {
 		//Log.d(TAG, "onCreate(Bundle) called");
     setContentView(R.layout.activity_quiz);
 
-		if (savedInstanceState != null) {
-		  mQuestionBank.advanceTo(savedInstanceState.getInt(KEY_INDEX, 0));
-		  mCheatQuestions.addAll(savedInstanceState.getIntegerArrayList(KEY_CHEAT_QUESTIONS));
-		}
+	  if (savedInstanceState != null) {
+	    mQuestionBank.advanceTo(savedInstanceState.getInt(KEY_INDEX, 0));
+	    mCheatQuestions.addAll(savedInstanceState.getIntegerArrayList(KEY_CHEAT_QUESTIONS));
+	  }
 		
-		TextView buildVersionTextView = (TextView) findViewById(R.id.build_version);
-		buildVersionTextView.setText(getResources().getString(R.string.build_version, Build.VERSION.SDK));
+	  TextView buildVersionTextView = (TextView) findViewById(R.id.build_version);
+	  buildVersionTextView.setText(
+        getResources().getString(R.string.build_version, Build.VERSION.SDK_INT));
 
-		mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-		updateQuestion();
-		mQuestionTextView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View unused) {
-					mQuestionBank.incrementQuestion();
-					updateQuestion();
-				}
-	  	});
+	  mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+	  updateQuestion();
+	  mQuestionTextView.setOnClickListener(new OnClickListener() {
+	      @Override
+		    public void onClick(View unused) {
+		      mQuestionBank.incrementQuestion();
+		      updateQuestion();
+		    }
+	    });
 
-    Button trueButton = (Button) findViewById(R.id.true_button);
-		trueButton.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View unused) {
-          showGrade(mQuestionBank.isCorrect(true));
-        }
-      });
+      Button trueButton = (Button) findViewById(R.id.true_button);
+	  	trueButton.setOnClickListener(new OnClickListener() {
+          @Override
+          public void onClick(View unused) {
+            showGrade(mQuestionBank.isCorrect(true));
+          }
+        });
 
     Button falseButton = (Button) findViewById(R.id.false_button);
 		falseButton.setOnClickListener(new OnClickListener() {

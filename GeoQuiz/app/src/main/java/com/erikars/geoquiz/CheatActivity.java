@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.content.Intent;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.os.Build;
 
@@ -52,7 +51,7 @@ public class CheatActivity extends Activity {
 			});
 			
 		TextView buildVersionTextView = (TextView) findViewById(R.id.buildVersion);
-		buildVersionTextView.setText(getResources().getString(R.string.build_version, Build.VERSION.SDK));
+		buildVersionTextView.setText(getResources().getString(R.string.build_version, Build.VERSION.SDK_INT));
 	}
 
 	@Override
@@ -63,9 +62,7 @@ public class CheatActivity extends Activity {
 	}
 
 	private void showAnswer() {
-		mAnswerTextView.setText(mAnswer == true 
-														? R.string.true_button
-														: R.string.false_button);
+		mAnswerTextView.setText(mAnswer ? R.string.true_button : R.string.false_button);
 		mAnswerShown = true;
 		setAnswerShownResult();
 	}
