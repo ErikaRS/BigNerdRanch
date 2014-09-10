@@ -23,11 +23,20 @@ public class CrimeFragment extends Fragment {
   
   private Crime mCrime;
   
+  public static CrimeFragment newInstance(UUID crimeId) {
+    Bundle args = new Bundle();
+    args.putSerializable(EXTRA_CRIME_ID, crimeId);
+    CrimeFragment cf = new CrimeFragment();
+    cf.setArguments(args);
+    return cf;
+  }
+  
+  private CrimeFragment() {}
+  
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Intent i = getActivity().getIntent();
-    UUID id = (UUID) i.getSerializableExtra(EXTRA_CRIME_ID);
+    UUID id = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
     mCrime = CrimeLab.get(getActivity()).getCrime(id);
   }
 
