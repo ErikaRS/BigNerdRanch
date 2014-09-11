@@ -17,6 +17,7 @@ import com.erikars.criminalintent.R;
 import com.erikars.criminalintent.model.Crime;
 import java.util.UUID;
 import com.erikars.criminalintent.model.CrimeLab;
+import com.google.common.base.Preconditions;
 
 public class CrimeFragment extends Fragment {
   public static final String EXTRA_CRIME_ID = "com.erikars.criminalintent.crime_id";
@@ -24,7 +25,8 @@ public class CrimeFragment extends Fragment {
   private Crime mCrime;
   
   public static CrimeFragment newInstance(UUID crimeId) {
-    Bundle args = new Bundle();
+    Preconditions.checkNotNull(crimeId);
+		Bundle args = new Bundle();
     args.putSerializable(EXTRA_CRIME_ID, crimeId);
     CrimeFragment cf = new CrimeFragment();
     cf.setArguments(args);
