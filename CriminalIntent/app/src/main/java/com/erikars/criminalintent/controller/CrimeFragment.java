@@ -18,9 +18,13 @@ import com.erikars.criminalintent.model.Crime;
 import java.util.UUID;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
+import android.view.View.OnClickListener;
+import android.support.v4.app.FragmentManager;
+import android.app.Dialog;
 
 public class CrimeFragment extends Fragment {
   public static final String EXTRA_CRIME_ID = "com.erikars.criminalintent.crime_id";
+	private static final String DIALOG_DATE = "date";
   
   private Crime mCrime;
   
@@ -69,7 +73,14 @@ public class CrimeFragment extends Fragment {
       
     Button dateButton = (Button) v.findViewById(R.id.crime_date);
     dateButton.setText(crime.getFormattesDate());
-    dateButton.setEnabled(false);
+		dateButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					FragmentManager fm = getActivity().getSupportFragmentManager();
+					DatePickerFragment d = new DatePickerFragment();
+					d.show(fm, DIALOG_DATE);
+				}
+	  	});
     
     CheckBox solvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
     solvedCheckBox.setChecked(crime.isSolved());
