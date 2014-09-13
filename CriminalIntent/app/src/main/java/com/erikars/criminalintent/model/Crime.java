@@ -8,13 +8,15 @@ public class Crime {
   private final UUID mId;
   private String mTitle;
   private Date mDate;
+	private Date mTime;
   private boolean mSolved;
   
   public Crime() {
     mId = UUID.randomUUID();
     mDate = new Date();
+		mTime = new Date();
   }
-  
+
   public UUID getId() {
     return mId;
   }
@@ -35,11 +37,24 @@ public class Crime {
     return mDate;
   }
   
-  public String getFormattesDate() {
-    String format = DateFormat.getBestDateTimePattern(Locale.getDefault(), "EEEE, MMMM d, yyyy");
-    return DateFormat.format(format, getDate()).toString();
+  public String getFormattedDateTime() {
+    String dateFormat = DateFormat.getBestDateTimePattern(
+		    Locale.getDefault(), "EEEE, MMMM d, yyyy");
+		String timeFormat = DateFormat.getBestDateTimePattern(
+		  	Locale.getDefault(), "h:mm");
+    return DateFormat.format(dateFormat, getDate()).toString()
+		    + ", "
+				+ DateFormat.format(timeFormat, getTime()).toString();
   }
+	
+	public void setTime(Date time) {
+		this.mTime = time;
+	}
 
+	public Date getTime() {
+		return mTime;
+	}
+	
   public void setSolved(boolean solved) {
     mSolved = solved;
   }
