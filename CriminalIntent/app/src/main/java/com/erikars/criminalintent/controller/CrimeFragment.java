@@ -122,6 +122,8 @@ public class CrimeFragment extends Fragment {
 	}
 
 	private void updateDateTime() {
+		Preconditions.checkNotNull(mCrime);
+		Preconditions.checkNotNull(mDateTimeButton);
 		mDateTimeButton.setText(mCrime.getFormattedDateTime());
 	}
 }

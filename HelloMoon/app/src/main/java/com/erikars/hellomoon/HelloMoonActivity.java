@@ -2,10 +2,12 @@ package com.erikars.hellomoon;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
-public class HelloMoonActivity extends SingleFragmentActivity {
+public class HelloMoonActivity extends FragmentActivity {
 	@Override
-	protected Fragment createFragment() {
-		return new HelloMoonFragment();
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_hello_moon);
 	}
 }
