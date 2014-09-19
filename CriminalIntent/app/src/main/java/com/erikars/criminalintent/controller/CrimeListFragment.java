@@ -1,10 +1,13 @@
 package com.erikars.criminalintent.controller;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,9 +19,6 @@ import com.erikars.criminalintent.model.Crime;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.List;
-import android.view.MenuInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class CrimeListFragment extends ListFragment {
   private static final String TAG = CrimeListFragment.class.getSimpleName();
@@ -53,6 +53,7 @@ public class CrimeListFragment extends ListFragment {
 		inflater.inflate(R.menu.fragment_crime_list, menu);
 	}
 
+	@TargetApi(11)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -62,7 +63,15 @@ public class CrimeListFragment extends ListFragment {
 				showCrimeDetails(c);
 				return true;
 			case R.id.menu_item_show_subtitle:
-				getActivity().getActionBar().setTitle(R.string.subtitle);
+				if (getActivity().getActionBar().getSubtitle() == null) {
+					// Show subtitle 
+			  	getActivity().getActionBar().setSubtitle(R.string.subtitle);
+				  item.setTitle(R.string.hide_subtitle);
+				} else {
+					// Hide subtitle 
+					getActivity().getActionBar().setSubtitle(null);
+					item.setTitle(R.string.show_subtitle);
+				}
 				return true;
 			default:
 		    return super.onOptionsItemSelected(item);
