@@ -1,11 +1,11 @@
 package com.erikars.criminalintent.model;
-import java.util.ArrayList;
 import android.content.Context;
-import java.util.UUID;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CrimeLab {
   private static CrimeLab sCrimeLab;
@@ -15,14 +15,6 @@ public class CrimeLab {
   
   private CrimeLab(Context appContext) {
     mAppContext = appContext;
-    
-    // TODO(erikars): For initial testing only
-    for (int i = 0; i < 100; i++) {
-      Crime c = new Crime();
-      c.setTitle("Crime #" + i);
-      c.setSolved(i % 2 == 0);
-      mCrimes.add(c);
-    }
   }
   
   // TODO(erikars): I don't like singletons where
@@ -40,8 +32,8 @@ public class CrimeLab {
    *      themselves are mutable, and any mutations will 
    *      be reflected in this CrimeLab
    */
-  public ImmutableList<Crime> getCrimes() {
-    return ImmutableList.copyOf(mCrimes);
+  public List<Crime> getCrimes() {
+    return mCrimes;
   }
   
   /**
@@ -59,4 +51,8 @@ public class CrimeLab {
     }
     return null;
   }
+	
+	public void addCrime(Crime c) {
+		mCrimes.add(c);
+	}
 }

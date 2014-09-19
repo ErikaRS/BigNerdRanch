@@ -1,12 +1,17 @@
 package com.erikars.criminalintent.controller;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,15 +20,12 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import com.erikars.criminalintent.R;
 import com.erikars.criminalintent.model.Crime;
-import java.util.UUID;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
-import android.view.View.OnClickListener;
-import android.support.v4.app.FragmentManager;
-import android.app.Dialog;
 import java.util.Date;
-import android.app.Activity;
-import android.util.Log;
+import java.util.UUID;
+import android.view.MenuItem;
+import android.support.v4.app.NavUtils;
 
 public class CrimeFragment extends Fragment {
 	private static final String TAG = CrimeFragment.class.getSimpleName();
@@ -49,14 +51,20 @@ public class CrimeFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    UUID id = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
+		setHasOptionsMenu(true);
+		UUID id = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
     mCrime = CrimeLab.get(getActivity()).getCrime(id);
   }
 
+	@TargetApi(11)
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_crime, container, false /* attachToRoot */);
-    
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+		  	&& NavUtils.getParentActivityName(getActivity()) != null) {
+			getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+		
 		if (mCrime == null) {
 			mCrime = new Crime();
 		}
@@ -118,6 +126,19 @@ public class CrimeFragment extends Fragment {
 				mCrime.setTime(time);
 			}
 			updateDateTime();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (NavUtils.getParentActivityName(getActivity()) != null) {
+					NavUtils.navigateUpFromSameTask(getActivity());
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
