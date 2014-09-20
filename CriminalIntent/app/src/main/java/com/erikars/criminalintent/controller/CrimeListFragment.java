@@ -19,21 +19,33 @@ import com.erikars.criminalintent.model.Crime;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.List;
+import android.view.LayoutInflater;
+import android.os.Build;
 
 public class CrimeListFragment extends ListFragment {
   private static final String TAG = CrimeListFragment.class.getSimpleName();
+	
+	private boolean mSubtitleShown = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     getActivity().setTitle(R.string.crimes_title);
 		setHasOptionsMenu(true);
+		setRetainInstance(true);
     
     List<Crime> crimes = CrimeLab.get(getActivity()).getCrimes();
     ArrayAdapter<Crime> adapter = new CrimeAdapter(
         getActivity(), crimes);
     setListAdapter(adapter);
   }
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = super.onCreateView(inflater, container, savedInstanceState);
+		setSubtitle();
+		return v;
+	}
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
@@ -51,6 +63,8 @@ public class CrimeListFragment extends ListFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_crime_list, menu);
+		MenuItem toggleSubtitle = menu.findItem(R.id.menu_item_toggle_subtitle);
+		setSubtitleToggle(toggleSubtitle);
 	}
 
 	@TargetApi(11)
@@ -62,16 +76,10 @@ public class CrimeListFragment extends ListFragment {
 				CrimeLab.get(getActivity()).addCrime(c);
 				showCrimeDetails(c);
 				return true;
-			case R.id.menu_item_show_subtitle:
-				if (getActivity().getActionBar().getSubtitle() == null) {
-					// Show subtitle 
-			  	getActivity().getActionBar().setSubtitle(R.string.subtitle);
-				  item.setTitle(R.string.hide_subtitle);
-				} else {
-					// Hide subtitle 
-					getActivity().getActionBar().setSubtitle(null);
-					item.setTitle(R.string.show_subtitle);
-				}
+			case R.id.menu_item_toggle_subtitle:
+				mSubtitleShown = !mSubtitleShown;
+				setSubtitle();
+				setSubtitleToggle(item);
 				return true;
 			default:
 		    return super.onOptionsItemSelected(item);
@@ -82,6 +90,34 @@ public class CrimeListFragment extends ListFragment {
 		Intent i = new Intent(getActivity(), CrimePagerActivity.class);
 		i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
 		startActivityForResult(i, 0);
+	}
+	
+	private void setSubtitle() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			return;
+		}
+		if (mSubtitleShown) {
+			// Show subtitle 
+			getActivity().getActionBar().setSubtitle(R.string.subtitle);
+		} else {
+			// Hide subtitle 
+			getActivity().getActionBar().setSubtitle(null);
+		}
+	}
+	
+	/**
+	 * The toggle action is the opposite of the current 
+	 * subtitle state 
+	 */
+	private void setSubtitleToggle(MenuItem item) {
+		if (item == null) {
+			return;
+		}
+		if (mSubtitleShown) {
+			item.setTitle(R.string.hide_subtitle);
+		} else {
+			item.setTitle(R.string.show_subtitle);
+		}
 	}
   
   private static class CrimeAdapter extends ArrayAdapter<Crime> {
