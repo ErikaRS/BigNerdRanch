@@ -3,14 +3,17 @@ package com.erikars.criminalintent.controller;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,8 +22,7 @@ import com.erikars.criminalintent.model.Crime;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.List;
-import android.view.LayoutInflater;
-import android.os.Build;
+import android.view.View.OnClickListener;
 
 public class CrimeListFragment extends ListFragment {
   private static final String TAG = CrimeListFragment.class.getSimpleName();
@@ -33,7 +35,7 @@ public class CrimeListFragment extends ListFragment {
     getActivity().setTitle(R.string.crimes_title);
 		setHasOptionsMenu(true);
 		setRetainInstance(true);
-    
+
     List<Crime> crimes = CrimeLab.get(getActivity()).getCrimes();
     ArrayAdapter<Crime> adapter = new CrimeAdapter(
         getActivity(), crimes);
@@ -42,8 +44,15 @@ public class CrimeListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = super.onCreateView(inflater, container, savedInstanceState);
+		View v = inflater.inflate(R.layout.fragment_crime_list, container, false);
 		setSubtitle();
+		View newCrime = v.findViewById(android.R.id.empty);
+		newCrime.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View b) {
+					newCrime();
+				}
+		  });
 		return v;
 	}
 
@@ -72,9 +81,7 @@ public class CrimeListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_item_new_crime:
-				Crime c = new Crime();
-				CrimeLab.get(getActivity()).addCrime(c);
-				showCrimeDetails(c);
+				newCrime();
 				return true;
 			case R.id.menu_item_toggle_subtitle:
 				mSubtitleShown = !mSubtitleShown;
@@ -84,6 +91,12 @@ public class CrimeListFragment extends ListFragment {
 			default:
 		    return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void newCrime() {
+		Crime c = new Crime();
+		CrimeLab.get(getActivity()).addCrime(c);
+		showCrimeDetails(c);
 	}
 
 	private void showCrimeDetails(Crime c) {
