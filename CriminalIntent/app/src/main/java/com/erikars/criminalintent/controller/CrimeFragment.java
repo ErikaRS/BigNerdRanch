@@ -142,6 +142,12 @@ public class CrimeFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		CrimeLab.get(getActivity()).saveCrimes();
+	}
+
 	private void updateDateTime() {
 		Preconditions.checkNotNull(mCrime);
 		Preconditions.checkNotNull(mDateTimeButton);

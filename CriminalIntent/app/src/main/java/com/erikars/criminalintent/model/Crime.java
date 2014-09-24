@@ -7,30 +7,34 @@ import android.text.format.DateFormat;
 public class Crime {
   private final UUID mId;
   private String mTitle;
-  private Date mDate;
-	private Date mTime;
+  private Date mDate = new Date();;
+	private Date mTime = new Date();;
   private boolean mSolved;
   
   public Crime() {
-    mId = UUID.randomUUID();
-    mDate = new Date();
-		mTime = new Date();
+    this(UUID.randomUUID());
   }
+	
+	public Crime(UUID id) {
+		mId = id;
+	}
 
   public UUID getId() {
     return mId;
   }
 
-  public void setTitle(String title) {
+  public Crime setTitle(String title) {
     mTitle = title;
+		return this;
   }
 
   public String getTitle() {
     return mTitle;
   }
   
-  public void setDate(Date date) {
+  public Crime setDate(Date date) {
     mDate = date;
+		return this;
   }
 
   public Date getDate() {
@@ -47,16 +51,18 @@ public class Crime {
 				+ DateFormat.format(timeFormat, getTime()).toString();
   }
 	
-	public void setTime(Date time) {
+	public Crime setTime(Date time) {
 		this.mTime = time;
+		return this;
 	}
 
 	public Date getTime() {
 		return mTime;
 	}
 	
-  public void setSolved(boolean solved) {
+  public Crime setSolved(boolean solved) {
     mSolved = solved;
+		return this;
   }
 
   public boolean isSolved() {

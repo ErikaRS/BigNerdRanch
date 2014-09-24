@@ -6,15 +6,28 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import com.erikars.criminalintent.serialization.CriminalIntentJsonSerializer;
+import org.json.JSONException;
+import java.io.IOException;
+import android.util.Log;
 
 public class CrimeLab {
+	private static final String TAG = CrimeLab.class.getSimpleName();
+	private static final String FILENAME = "crimes.json";
+	
   private static CrimeLab sCrimeLab;
   
   private final Context mAppContext;
-  private final ArrayList<Crime> mCrimes = new ArrayList<>();
+  private final ArrayList<Crime> mCrimes;
   
   private CrimeLab(Context appContext) {
     mAppContext = appContext;
+		try {
+			mCrimes = CriminalIntentJsonSerializer.loadCrimes(mAppContext, FILENAME);
+		} catch (IOException | JSONException e) {
+			Log.e(TAG, "Error loading crimes", e);
+			mCrimes = new ArrayList<>();
+		}
   }
   
   // TODO(erikars): I don't like singletons where
@@ -54,5 +67,17 @@ public class CrimeLab {
 	
 	public void addCrime(Crime c) {
 		mCrimes.add(c);
+	}
+	
+	public boolean saveCrimes() {
+		try {
+			CriminalIntentJsonSerializer.saveCrimes(
+		    mAppContext, FILENAME, mCrimes);
+				Log.d(TAG, "Crimes saved to file.");
+				return true;
+		} catch (IOException | JSONException e) {
+			Log.e(TAG, "Error saving crimes", e);
+			return false;
+		}
 	}
 }
