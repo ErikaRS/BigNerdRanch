@@ -23,6 +23,9 @@ import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.List;
 import android.view.View.OnClickListener;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ContextMenu;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class CrimeListFragment extends ListFragment {
   private static final String TAG = CrimeListFragment.class.getSimpleName();
@@ -53,6 +56,7 @@ public class CrimeListFragment extends ListFragment {
 					newCrime();
 				}
 		  });
+		registerForContextMenu(v.findViewById(android.R.id.list));
 		return v;
 	}
 
@@ -76,6 +80,23 @@ public class CrimeListFragment extends ListFragment {
 		setSubtitleToggle(toggleSubtitle);
 	}
 
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
+		int position = menuInfo.position;
+		CrimeAdapter adapter = (CrimeAdapter) getListAdapter();
+		Crime crime = adapter.getItem(position);
+		
+		switch (item.getItemId()) {
+			case R.id.menu_item_delete_crime:
+				CrimeLab.get(getActivity()).deleteCrime(crime);
+				adapter.notifyDataSetChanged();
+				return true;
+			default:
+			  return super.onContextItemSelected(item);
+		}
+	}
+
 	@TargetApi(11)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -91,6 +112,12 @@ public class CrimeListFragment extends ListFragment {
 			default:
 		    return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onCreateContextMenu(
+	    ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		getActivity().getMenuInflater().inflate(R.menu.crime_list_item_context, menu);
 	}
 
 	private void newCrime() {
