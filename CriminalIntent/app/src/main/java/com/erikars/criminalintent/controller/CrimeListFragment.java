@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,11 +25,11 @@ import com.erikars.criminalintent.R;
 import com.erikars.criminalintent.model.Crime;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
+import java.util.HashSet;
 import java.util.List;
-import android.view.View.OnClickListener;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.ContextMenu;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import java.util.Set;
+import android.support.v4.util.Pools;
+import com.google.common.collect.Iterables;
 
 public class CrimeListFragment extends ListFragment {
   private static final String TAG = CrimeListFragment.class.getSimpleName();
@@ -49,15 +53,68 @@ public class CrimeListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_crime_list, container, false);
 		setSubtitle();
-		View newCrime = v.findViewById(android.R.id.empty);
-		newCrime.setOnClickListener(new OnClickListener() {
+		initEmptyView(v);
+		initContextMenu(v);
+		return v;
+	}
+
+	private void initContextMenu(View v) {
+		ListView listView = (ListView) v.findViewById(android.R.id.list);
+		if (isPreHoneycomb()) {
+			// Floating context menu on older versions
+			registerForContextMenu(listView);
+		} else {
+			// Contextual context menu when supported
+			listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+			listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+					@Override
+					public void onItemCheckedStateChanged(
+					    ActionMode mode, int position, long id, boolean checked) {}
+
+					@Override
+					public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+						mode.getMenuInflater().inflate(R.menu.crime_list_item_context, menu);
+						return true;
+					}
+
+					@Override
+					public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+						return false;
+					}
+
+					@Override
+					public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+						switch (item.getItemId()) {
+							case R.id.menu_item_delete_crime:
+								CrimeAdapter adapter = (CrimeAdapter) getListAdapter();
+						    CrimeLab crimeLab = CrimeLab.get(getActivity());
+								for (int i = adapter.getCount(); i >= 0; i--) {
+									if (getListView().isItemChecked(i)) {
+										crimeLab.deleteCrime(adapter.getItem(i));
+									}
+								}
+								mode.finish();
+								adapter.notifyDataSetChanged();
+								return true;
+							default:
+							  return false;
+						}
+					}
+
+					@Override
+					public void onDestroyActionMode(ActionMode mode) {}
+			  });
+		}
+	}
+
+	private void initEmptyView(View v) {
+		View emptyView = v.findViewById(android.R.id.empty);
+		emptyView.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View b) {
+				public void onClick(View v) {
 					newCrime();
 				}
 		  });
-		registerForContextMenu(v.findViewById(android.R.id.list));
-		return v;
 	}
 
   @Override
@@ -133,7 +190,7 @@ public class CrimeListFragment extends ListFragment {
 	}
 	
 	private void setSubtitle() {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+		if (isPreHoneycomb()) {
 			return;
 		}
 		if (mSubtitleShown) {
@@ -143,6 +200,10 @@ public class CrimeListFragment extends ListFragment {
 			// Hide subtitle 
 			getActivity().getActionBar().setSubtitle(null);
 		}
+	}
+	
+	private boolean isPreHoneycomb() {
+		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
 	}
 	
 	/**

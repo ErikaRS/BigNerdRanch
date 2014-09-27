@@ -69,8 +69,8 @@ public class CrimeLab {
 		mCrimes.add(c);
 	}
 	
-	public void deleteCrime(Crime c) {
-		mCrimes.remove(c);
+	public boolean deleteCrime(Crime c) {
+		return mCrimes.remove(c);
 	}
 	
 	public boolean saveCrimes() {
