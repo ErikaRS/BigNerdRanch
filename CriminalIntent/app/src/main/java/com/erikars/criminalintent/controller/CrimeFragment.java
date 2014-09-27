@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.UUID;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.MenuInflater;
+import android.view.Menu;
 
 public class CrimeFragment extends Fragment {
 	private static final String TAG = CrimeFragment.class.getSimpleName();
@@ -133,13 +135,26 @@ public class CrimeFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (NavUtils.getParentActivityName(getActivity()) != null) {
-					NavUtils.navigateUpFromSameTask(getActivity());
-				}
+				goUp();
+				return true;
+			case R.id.menu_item_delete_crime:
+				CrimeLab.get(getActivity()).deleteCrime(mCrime);
+				goUp();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void goUp() {
+		if (NavUtils.getParentActivityName(getActivity()) != null) {
+			NavUtils.navigateUpFromSameTask(getActivity());
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.fragment_crime, menu);
 	}
 
 	@Override
