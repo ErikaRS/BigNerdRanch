@@ -7,9 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,10 +29,6 @@ import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.Date;
 import java.util.UUID;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.view.MenuInflater;
-import android.view.Menu;
 
 public class CrimeFragment extends Fragment {
 	private static final String TAG = CrimeFragment.class.getSimpleName();
@@ -48,8 +49,6 @@ public class CrimeFragment extends Fragment {
     return cf;
   }
   
-  private CrimeFragment() {}
-  
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,9 +61,11 @@ public class CrimeFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_crime, container, false /* attachToRoot */);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-		  	&& NavUtils.getParentActivityName(getActivity()) != null) {
-			getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    if (//Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+		  	//&& 
+				NavUtils.getParentActivityName(getActivity()) != null) {
+			((ActionBarActivity) getActivity()).getSupportActionBar()
+			    .setDisplayHomeAsUpEnabled(true);
 		}
 		
 		if (mCrime == null) {

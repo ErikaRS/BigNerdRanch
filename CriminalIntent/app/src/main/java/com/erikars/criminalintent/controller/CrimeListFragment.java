@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,11 +26,7 @@ import com.erikars.criminalintent.R;
 import com.erikars.criminalintent.model.Crime;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import android.support.v4.util.Pools;
-import com.google.common.collect.Iterables;
 
 public class CrimeListFragment extends ListFragment {
   private static final String TAG = CrimeListFragment.class.getSimpleName();
@@ -194,17 +191,18 @@ public class CrimeListFragment extends ListFragment {
 		if (isPreHoneycomb()) {
 			return;
 		}
+		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		if (mSubtitleShown) {
 			// Show subtitle 
-			getActivity().getActionBar().setSubtitle(R.string.subtitle);
+			activity.getSupportActionBar().setSubtitle(R.string.subtitle);
 		} else {
 			// Hide subtitle 
-			getActivity().getActionBar().setSubtitle(null);
+			activity.getSupportActionBar().setSubtitle(null);
 		}
 	}
 	
 	private boolean isPreHoneycomb() {
-		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
+		return false && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
 	}
 	
 	/**
