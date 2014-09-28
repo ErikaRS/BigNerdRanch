@@ -1,6 +1,8 @@
 <DatePicker xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:ignore="UnusedAttribute"
+  android:layout_width="wrap_content"
   android:layout_height="wrap_content" 
-	android:calendarViewShown="false">
+  android:calendarViewShown="false">
     
 </DatePicker>

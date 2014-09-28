@@ -48,9 +48,15 @@ public class CriminalIntentJsonSerializer {
 		  Context context, String filename, JSONArray content) 
 	    throws IOException {
 		OutputStream out = getOutputStream(context, filename);
-		try (Writer w = new OutputStreamWriter(out)) {
+    Writer w = null;
+		try {
+      w = new OutputStreamWriter(out);
 		  w.write(content.toString());
-		}
+		} finally {
+      if (w != null) {
+        w.close();
+      }
+    }
 	}
 
 	private static JSONArray read(Context context, String filename) 
@@ -64,12 +70,18 @@ public class CriminalIntentJsonSerializer {
 		}
 
 		StringBuilder jsonString = new StringBuilder();
-		try (BufferedReader r = new BufferedReader(new InputStreamReader(in))) {
+    BufferedReader r = null;
+		try {
+      r = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while ((line = r.readLine()) != null) {
 				jsonString.append(line);
 			}
-		} 
+		} finally {
+      if (r != null) {
+        r.close();
+      }
+    }
 
 		return (JSONArray)new JSONTokener(jsonString.toString())
 			.nextValue();

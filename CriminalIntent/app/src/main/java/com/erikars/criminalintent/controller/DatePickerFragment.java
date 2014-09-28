@@ -30,8 +30,6 @@ public class DatePickerFragment extends DialogFragment {
 		return f;
 	}
 	
-	private DatePickerFragment() {}
-	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Date date = (Date) getArguments().getSerializable(EXTRA_DATE);

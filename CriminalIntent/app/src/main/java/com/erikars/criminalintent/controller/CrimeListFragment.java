@@ -56,6 +56,7 @@ public class CrimeListFragment extends ListFragment {
 		return v;
 	}
 
+  @TargetApi(11)
 	private void initContextMenu(View v) {
 		ListView listView = (ListView) v.findViewById(android.R.id.list);
 		if (isPreHoneycomb()) {

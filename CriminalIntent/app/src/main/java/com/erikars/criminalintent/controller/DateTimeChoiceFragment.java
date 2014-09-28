@@ -28,8 +28,6 @@ public class DateTimeChoiceFragment extends DialogFragment {
 		return f;
 	}
 	
-	private DateTimeChoiceFragment() {}
-
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
     View v = (LinearLayout) getActivity().getLayoutInflater()

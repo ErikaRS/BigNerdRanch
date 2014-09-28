@@ -26,8 +26,6 @@ public class TimePickerFragment extends DialogFragment {
 		return f;
 	}
 	
-	private TimePickerFragment() {}
-
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Date time = (Date) getArguments().getSerializable(EXTRA_TIME);
