@@ -21,7 +21,6 @@ import android.support.annotation.Nullable;
 import android.os.Environment;
 import java.io.FileInputStream;
 import java.io.File;
-import android.support.v4.content.ContextCompatJellybean;
 import java.io.FileOutputStream;
 
 public class CriminalIntentJsonSerializer {

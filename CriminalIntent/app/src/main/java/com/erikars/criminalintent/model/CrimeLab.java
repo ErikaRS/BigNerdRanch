@@ -22,12 +22,14 @@ public class CrimeLab {
   
   private CrimeLab(Context appContext) {
     mAppContext = appContext;
+    ArrayList<Crime> parsedCrimes = null;
 		try {
-			mCrimes = CriminalIntentJsonSerializer.loadCrimes(mAppContext, FILENAME);
+			parsedCrimes = CriminalIntentJsonSerializer.loadCrimes(mAppContext, FILENAME);
 		} catch (IOException | JSONException e) {
 			Log.e(TAG, "Error loading crimes", e);
-			mCrimes = new ArrayList<>();
-		}
+		} finally {
+      mCrimes = parsedCrimes != null ? parsedCrimes : new ArrayList<Crime>();
+    }
   }
   
   // TODO(erikars): I don't like singletons where
