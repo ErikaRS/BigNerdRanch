@@ -2,6 +2,8 @@ package com.erikars.criminalintent.model;
 import java.util.UUID;
 import java.util.Date;
 import java.util.Locale;
+
+import android.os.Build;
 import android.text.format.DateFormat;
 
 public class Crime {
@@ -42,10 +44,16 @@ public class Crime {
   }
   
   public String getFormattedDateTime() {
-    String dateFormat = DateFormat.getBestDateTimePattern(
-		    Locale.getDefault(), "EEEE, MMMM d, yyyy");
-		String timeFormat = DateFormat.getBestDateTimePattern(
-		  	Locale.getDefault(), "h:mm");
+    String dateFormat = "EEEE, MMMM, d, yyyy";
+    String timeFormat = "h:mm";
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+      dateFormat = DateFormat.getBestDateTimePattern(
+          Locale.getDefault(), "EEEE, MMMM d, yyyy");
+      timeFormat = DateFormat.getBestDateTimePattern(
+          Locale.getDefault(), "h:mm");
+    }
+
     return DateFormat.format(dateFormat, getDate()).toString()
 		    + ", "
 				+ DateFormat.format(timeFormat, getTime()).toString();

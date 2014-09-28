@@ -188,9 +188,9 @@ public class CrimeListFragment extends ListFragment {
 	}
 	
 	private void setSubtitle() {
-		if (isPreHoneycomb()) {
-			return;
-		}
+		//if (isPreHoneycomb()) {
+		//	return;
+		//}
 		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		if (mSubtitleShown) {
 			// Show subtitle 
@@ -202,7 +202,7 @@ public class CrimeListFragment extends ListFragment {
 	}
 	
 	private boolean isPreHoneycomb() {
-		return false && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
+		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
 	}
 	
 	/**
