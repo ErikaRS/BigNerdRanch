@@ -1,4 +1,5 @@
 package com.erikars.criminalintent.controller;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,6 +30,8 @@ public class TimePickerFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Date time = (Date) getArguments().getSerializable(EXTRA_TIME);
+    // AlertDialog doesn't have a parent
+    @SuppressLint("InflateParams")
 		TimePicker v = (TimePicker) getActivity().getLayoutInflater().
 		    inflate(R.layout.dialog_time, null);
 		Calendar c = Calendar.getInstance();
@@ -58,7 +61,7 @@ public class TimePickerFragment extends DialogFragment {
 			.create();
 	}
 
-	private void setResult(int resultCode) {
+	private void setResult(@SuppressWarnings("SameParameterValue") int resultCode) {
 		if (getTargetFragment() == null) {
 			return;
 		}

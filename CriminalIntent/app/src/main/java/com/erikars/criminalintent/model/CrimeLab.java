@@ -55,7 +55,7 @@ public class CrimeLab {
    * @return the crime with the given id or null if there is
    *     no such crime.
    *
-   * @throws NullPointerExceptipn if id is null
+   * @throws NullPointerException if id is null
    */
   public @Nullable Crime getCrime(@NonNull UUID id) {
     Preconditions.checkNotNull(id);
@@ -71,19 +71,17 @@ public class CrimeLab {
 		mCrimes.add(c);
 	}
 	
-	public boolean deleteCrime(Crime c) {
-		return mCrimes.remove(c);
+	public void deleteCrime(Crime c) {
+		mCrimes.remove(c);
 	}
 	
-	public boolean saveCrimes() {
+	public void saveCrimes() {
 		try {
 			CriminalIntentJsonSerializer.saveCrimes(
 		    mAppContext, FILENAME, mCrimes);
 				Log.d(TAG, "Crimes saved to file.");
-				return true;
 		} catch (IOException | JSONException e) {
 			Log.e(TAG, "Error saving crimes", e);
-			return false;
 		}
 	}
 }

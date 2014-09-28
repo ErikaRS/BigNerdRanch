@@ -1,5 +1,6 @@
 package com.erikars.criminalintent.controller;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,8 +17,6 @@ import android.content.DialogInterface;
 import android.app.Activity;
 
 public class DatePickerFragment extends DialogFragment {
-	private static final String TAG = DatePickerFragment.class.getSimpleName();
-	
 	public static final String EXTRA_DATE = "com.erikars.criminalintent.date";
 
 	public static DatePickerFragment newInstance(Date date) {
@@ -35,7 +34,10 @@ public class DatePickerFragment extends DialogFragment {
 		Date date = (Date) getArguments().getSerializable(EXTRA_DATE);
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
-		DatePicker v = (DatePicker) getActivity().getLayoutInflater()
+
+    // AlertDialog doesn't have a parent
+		@SuppressLint("InflateParams")
+    DatePicker v = (DatePicker) getActivity().getLayoutInflater()
 		    .inflate(R.layout.dialog_date, null);
 		v.init(
 			c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),
@@ -61,7 +63,7 @@ public class DatePickerFragment extends DialogFragment {
 			.create();
 	}
 	
-	private void setResult(int resultCode) {
+	private void setResult(@SuppressWarnings("SameParameterValue") int resultCode) {
 		if (getTargetFragment() == null) {
 			return;
 		}

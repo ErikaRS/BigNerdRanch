@@ -10,6 +10,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:layout_alignParentEnd="true"
     android:layout_alignParentRight="true"
     android:enabled="false"
     android:focusable="false"
@@ -19,21 +20,21 @@
     android:id="@+id/crime_list_item_titleTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_toStartOf="@id/crime_list_item_solvedCheckBox"
     android:layout_toLeftOf="@id/crime_list_item_solvedCheckBox"
     android:textStyle="bold"
     android:paddingLeft="4dp"
-    android:paddingRight="4dp"
-    android:text="Crime title" />
+    android:paddingRight="4dp" />
 
   <TextView
     android:id="@+id/crime_list_item_dateTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/crime_list_item_titleTextView"
+    android:layout_toStartOf="@id/crime_list_item_solvedCheckBox"
     android:layout_toLeftOf="@id/crime_list_item_solvedCheckBox"
     android:paddingLeft="4dp"
-    android:paddingRight="4dp"
-    android:text="Crime date" />
+    android:paddingRight="4dp" />
 
 </RelativeLayout>
 

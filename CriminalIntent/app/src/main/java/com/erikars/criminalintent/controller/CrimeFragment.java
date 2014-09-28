@@ -3,7 +3,6 @@ package com.erikars.criminalintent.controller;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,7 +30,6 @@ import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
-	private static final String TAG = CrimeFragment.class.getSimpleName();
 	private static final String DIALOG_DATE_TIME = "date_time";
 	private static final int REQUEST_DATE_TIME = 0;
 	

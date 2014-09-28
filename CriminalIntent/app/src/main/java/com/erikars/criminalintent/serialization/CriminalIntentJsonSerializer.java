@@ -17,24 +17,22 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import org.json.JSONTokener;
-import android.support.annotation.Nullable;
 import android.os.Environment;
+import android.support.annotation.Nullable;
+
 import java.io.FileInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
 public class CriminalIntentJsonSerializer {
-	private Context mContext;
-	private String mFilename;
-
 	private static final String CRIME_ID = "id";
 	private static final String CRIME_TITLE = "title";
-	private static String CRIME_SOLVED = "solved";;
-	private static String CRIME_DATE = "date";
-	private static String CRIME_TIME = "time";
+	private static final String CRIME_SOLVED = "solved";
+	private static final String CRIME_DATE = "date";
+	private static final String CRIME_TIME = "time";
 	
 	public static void saveCrimes(
-	    Context context, String filename, ArrayList<Crime> crimes) 
+	    Context context, @SuppressWarnings("SameParameterValue") String filename, ArrayList<Crime> crimes)
 	    throws IOException, JSONException {
 		write(context, filename, toJson(crimes));
 	}
@@ -143,11 +141,10 @@ public class CriminalIntentJsonSerializer {
 	private static Crime fromJson(JSONObject json) 
 	    throws JSONException {
 		UUID id = UUID.fromString(json.getString(CRIME_ID));
-		Crime c = new Crime(id)
+		return new Crime(id)
 		    .setTitle(json.getString(CRIME_TITLE))
 		    .setSolved(json.getBoolean(CRIME_SOLVED))
 		    .setDate(new Date(json.getLong(CRIME_DATE)))
 		    .setTime(new Date(json.getLong(CRIME_TIME)));
-		return c;
 	}
 }

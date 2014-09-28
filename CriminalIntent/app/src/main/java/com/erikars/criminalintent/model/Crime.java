@@ -9,8 +9,8 @@ import android.text.format.DateFormat;
 public class Crime {
   private final UUID mId;
   private String mTitle;
-  private Date mDate = new Date();;
-	private Date mTime = new Date();;
+  private Date mDate = new Date();
+	private Date mTime = new Date();
   private boolean mSolved;
   
   public Crime() {

@@ -28,9 +28,8 @@ import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class CrimeListFragment extends ListFragment {
-  private static final String TAG = CrimeListFragment.class.getSimpleName();
-	
 	private boolean mSubtitleShown = false;
 
   @Override
@@ -234,7 +233,7 @@ public class CrimeListFragment extends ListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
       if (convertView == null) {
         convertView = mActivity.getLayoutInflater()
-            .inflate(R.layout.list_item_crime, null);
+            .inflate(R.layout.list_item_crime, parent, false);
       }
       
       Crime c = getItem(position);

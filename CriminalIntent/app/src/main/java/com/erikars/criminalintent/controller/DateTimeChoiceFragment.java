@@ -1,5 +1,6 @@
 package com.erikars.criminalintent.controller;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -27,11 +28,12 @@ public class DateTimeChoiceFragment extends DialogFragment {
 		f.setArguments(args);
 		return f;
 	}
-	
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-    View v = (LinearLayout) getActivity().getLayoutInflater()
-			.inflate(R.layout.dialog_date_time, null);
+    // AlertDialog doesn't have a parent
+    @SuppressLint("InflateParams")
+    View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
 		
 		Button dateButton = (Button) v.findViewById(R.id.dialog_time_date_dateButton);
 		dateButton.setOnClickListener(new OnClickListener() {
