@@ -1,5 +1,6 @@
 package com.erikars.criminalintent.controller;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -230,10 +231,11 @@ public class CrimeListFragment extends ListFragment {
     }
 
     @Override
+    @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
       if (convertView == null) {
         convertView = mActivity.getLayoutInflater()
-            .inflate(R.layout.list_item_crime, parent, false);
+            .inflate(R.layout.list_item_crime, null);
       }
       
       Crime c = getItem(position);
