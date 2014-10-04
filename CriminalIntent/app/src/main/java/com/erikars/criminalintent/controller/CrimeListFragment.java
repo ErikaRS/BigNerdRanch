@@ -42,13 +42,13 @@ public class CrimeListFragment extends ListFragment {
 
     List<Crime> crimes = CrimeLab.get(getActivity()).getCrimes();
     ArrayAdapter<Crime> adapter = new CrimeAdapter(
-        getActivity(), crimes);
+			getActivity(), crimes);
     setListAdapter(adapter);
   }
 
 	@Override
 	public View onCreateView(
-	    LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_crime_list, container, false);
 		setSubtitle();
 		initEmptyView(v);
@@ -64,46 +64,50 @@ public class CrimeListFragment extends ListFragment {
 			registerForContextMenu(listView);
 		} else {
 			// Contextual context menu when supported
-			listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-			listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-					@Override
-					public void onItemCheckedStateChanged(
-					    ActionMode mode, int position, long id, boolean checked) {}
-
-					@Override
-					public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-						mode.getMenuInflater().inflate(R.menu.crime_list_item_context, menu);
-						return true;
-					}
-
-					@Override
-					public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-						return false;
-					}
-
-					@Override
-					public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-						switch (item.getItemId()) {
-							case R.id.menu_item_delete_crime:
-								CrimeAdapter adapter = (CrimeAdapter) getListAdapter();
-						    CrimeLab crimeLab = CrimeLab.get(getActivity());
-								for (int i = adapter.getCount(); i >= 0; i--) {
-									if (getListView().isItemChecked(i)) {
-										crimeLab.deleteCrime(adapter.getItem(i));
-									}
-								}
-								mode.finish();
-								adapter.notifyDataSetChanged();
-								return true;
-							default:
-							  return false;
-						}
-					}
-
-					@Override
-					public void onDestroyActionMode(ActionMode mode) {}
-			  });
+			initContextualContextMenu(listView);
 		}
+	}
+
+	private void initContextualContextMenu(ListView listView) {
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+				@Override
+				public void onItemCheckedStateChanged(
+					ActionMode mode, int position, long id, boolean checked) {}
+
+				@Override
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					mode.getMenuInflater().inflate(R.menu.crime_list_item_context, menu);
+					return true;
+				}
+
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					return false;
+				}
+
+				@Override
+				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					switch (item.getItemId()) {
+						case R.id.menu_item_delete_crime:
+							CrimeAdapter adapter = (CrimeAdapter) getListAdapter();
+							CrimeLab crimeLab = CrimeLab.get(getActivity());
+							for (int i = adapter.getCount(); i >= 0; i--) {
+								if (getListView().isItemChecked(i)) {
+									crimeLab.deleteCrime(adapter.getItem(i));
+								}
+							}
+							mode.finish();
+							adapter.notifyDataSetChanged();
+							return true;
+						default:
+							return false;
+					}
+				}
+
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {}
+			});
 	}
 
 	private void initEmptyView(View v) {
@@ -118,7 +122,7 @@ public class CrimeListFragment extends ListFragment {
 
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
-    Crime c = ((CrimeAdapter) getListAdapter()).getItem(position);
+		Crime c = ((CrimeAdapter) getListAdapter()).getItem(position);
 		showCrimeDetails(c);
   }
 
@@ -142,7 +146,7 @@ public class CrimeListFragment extends ListFragment {
 		int position = menuInfo.position;
 		CrimeAdapter adapter = (CrimeAdapter) getListAdapter();
 		Crime crime = adapter.getItem(position);
-		
+
 		switch (item.getItemId()) {
 			case R.id.menu_item_delete_crime:
 				CrimeLab.get(getActivity()).deleteCrime(crime);
@@ -172,7 +176,7 @@ public class CrimeListFragment extends ListFragment {
 
 	@Override
 	public void onCreateContextMenu(
-	    ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		getActivity().getMenuInflater().inflate(R.menu.crime_list_item_context, menu);
 	}
 
@@ -187,7 +191,7 @@ public class CrimeListFragment extends ListFragment {
 		i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
 		startActivityForResult(i, 0);
 	}
-	
+
 	private void setSubtitle() {
 		//if (isPreHoneycomb()) {
 		//	return;
@@ -201,11 +205,11 @@ public class CrimeListFragment extends ListFragment {
 			activity.getSupportActionBar().setSubtitle(null);
 		}
 	}
-	
+
 	private boolean isPreHoneycomb() {
 		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
 	}
-	
+
 	/**
 	 * The toggle action is the opposite of the current 
 	 * subtitle state 
@@ -220,13 +224,13 @@ public class CrimeListFragment extends ListFragment {
 			item.setTitle(R.string.show_subtitle);
 		}
 	}
-  
+
   private static class CrimeAdapter extends ArrayAdapter<Crime> {
     final Activity mActivity;
-    
+
     CrimeAdapter(Activity activity, List<Crime> crimes) {
       super(activity, 0 /* not using a predefined layout */, 
-          crimes);
+						crimes);
       mActivity = Preconditions.checkNotNull(activity);
     }
 
@@ -235,20 +239,20 @@ public class CrimeListFragment extends ListFragment {
     public View getView(int position, View convertView, ViewGroup parent) {
       if (convertView == null) {
         convertView = mActivity.getLayoutInflater()
-            .inflate(R.layout.list_item_crime, null);
+					.inflate(R.layout.list_item_crime, null);
       }
-      
+
       Crime c = getItem(position);
-      
+
       TextView title = (TextView) convertView.findViewById(R.id.crime_list_item_titleTextView);
       title.setText(c.getTitle());
-      
+
       TextView date = (TextView) convertView.findViewById(R.id.crime_list_item_dateTextView);
       date.setText(c.getFormattedDateTime());
-      
+
       CheckBox solved = (CheckBox) convertView.findViewById(R.id.crime_list_item_solvedCheckBox);
       solved.setChecked(c.isSolved());
-      
+
       return convertView;
     }
   }

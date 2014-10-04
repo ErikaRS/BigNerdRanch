@@ -28,6 +28,10 @@ import com.erikars.criminalintent.model.CrimeLab;
 import com.google.common.base.Preconditions;
 import java.util.Date;
 import java.util.UUID;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.hardware.Camera;
+import android.widget.ImageButton;
 
 public class CrimeFragment extends Fragment {
 	private static final String DIALOG_DATE_TIME = "date_time";
@@ -55,13 +59,10 @@ public class CrimeFragment extends Fragment {
     mCrime = CrimeLab.get(getActivity()).getCrime(id);
   }
 
-	@TargetApi(11)
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_crime, container, false /* attachToRoot */);
-    if (//Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-		  	//&& 
-				NavUtils.getParentActivityName(getActivity()) != null) {
+    if (NavUtils.getParentActivityName(getActivity()) != null) {
 			((ActionBarActivity) getActivity()).getSupportActionBar()
 			    .setDisplayHomeAsUpEnabled(true);
 		}
@@ -70,7 +71,16 @@ public class CrimeFragment extends Fragment {
 			mCrime = new Crime();
 		}
     
-    EditText titleField = (EditText) v.findViewById(R.id.crime_title);
+    initTitle(v);
+    initDateTimePicker(v);
+    initSolvedButton(v);
+		initTakePictureButton(v);
+    
+    return v;
+  }
+	
+	private void initTitle(View v) {
+		EditText titleField = (EditText) v.findViewById(R.id.crime_title);
     titleField.setText(mCrime.getTitle());
     titleField.addTextChangedListener(new TextWatcher() {
         @Override
@@ -88,21 +98,25 @@ public class CrimeFragment extends Fragment {
           // Intentionally blank 
         }      
       });
-      
-    mDateTimeButton = (Button) v.findViewById(R.id.crime_date_time);
+	}
+	
+	private void initDateTimePicker(View v) {
+		mDateTimeButton = (Button) v.findViewById(R.id.crime_date_time);
     updateDateTime();
 		mDateTimeButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					FragmentManager fm = getActivity().getSupportFragmentManager();
 					DateTimeChoiceFragment d = DateTimeChoiceFragment.newInstance(
-					    mCrime.getDate(), mCrime.getTime());
+						mCrime.getDate(), mCrime.getTime());
 					d.setTargetFragment(CrimeFragment.this, REQUEST_DATE_TIME);
 					d.show(fm, DIALOG_DATE_TIME);
 				}
 	  	});
-    
-    CheckBox solvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+	}
+	
+	private void initSolvedButton(View v) {
+		CheckBox solvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
     solvedCheckBox.setChecked(mCrime.isSolved());
     solvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
         @Override
@@ -110,9 +124,29 @@ public class CrimeFragment extends Fragment {
           mCrime.setSolved(isChecked);
         }
       });
-    
-    return v;
-  }
+	}
+	
+	@TargetApi(9)
+	private void initTakePictureButton(View v) {
+		ImageButton takePicture = (ImageButton) v.findViewById(R.id.crime_takePictureButton);
+		takePicture.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
+					startActivity(i);
+				}
+	  	});
+			
+		// If a camera is not available, disable the take picture button
+		PackageManager pm = getActivity().getPackageManager();
+		boolean hasCamera = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)
+		    || pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT) 
+				|| (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD
+				    && Camera.getNumberOfCameras() > 0);
+		if (!hasCamera) {
+			takePicture.setEnabled(false);
+		}
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
