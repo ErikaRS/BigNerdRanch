@@ -32,10 +32,15 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.hardware.Camera;
 import android.widget.ImageButton;
+import android.util.Log;
 
 public class CrimeFragment extends Fragment {
+	private static final String TAG = CrimeFragment.class.getSimpleName();
+	
 	private static final String DIALOG_DATE_TIME = "date_time";
+
 	private static final int REQUEST_DATE_TIME = 0;
+	private static final int REQUEST_PHOTO = 1;
 	
   public static final String EXTRA_CRIME_ID = "com.erikars.criminalintent.crime_id";
   
@@ -133,7 +138,7 @@ public class CrimeFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
-					startActivity(i);
+					startActivityForResult(i, REQUEST_PHOTO);
 				}
 	  	});
 			
@@ -151,16 +156,32 @@ public class CrimeFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != Activity.RESULT_OK) return;
-		if (requestCode == REQUEST_DATE_TIME) {
-			Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-			if (date != null) {
-				mCrime.setDate(date);
-			}
-			Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
-			if (time != null) {
-				mCrime.setTime(time);
-			}
-			updateDateTime();
+		switch (requestCode) {
+			case REQUEST_DATE_TIME:
+	  		handleDateTimeResult(data);
+				break;
+			case REQUEST_PHOTO:
+				handlePhotoResult(data);
+				break;
+		}
+	}
+
+	private void handleDateTimeResult(Intent data) {
+		Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+		if (date != null) {
+			mCrime.setDate(date);
+		}
+		Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+		if (time != null) {
+			mCrime.setTime(time);
+		}
+		updateDateTime();
+	}
+
+	private void handlePhotoResult(Intent data) {
+		String filename = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
+		if (filename != null) {
+			Log.i(TAG, "File saved to " + filename);
 		}
 	}
 
