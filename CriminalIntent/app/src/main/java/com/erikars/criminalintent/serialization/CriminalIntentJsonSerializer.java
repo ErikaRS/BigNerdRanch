@@ -23,6 +23,8 @@ import android.support.annotation.Nullable;
 import java.io.FileInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import com.erikars.criminalintent.model.Photo;
+import com.google.common.base.Strings;
 
 public class CriminalIntentJsonSerializer {
 	private static final String CRIME_ID = "id";
@@ -30,6 +32,8 @@ public class CriminalIntentJsonSerializer {
 	private static final String CRIME_SOLVED = "solved";
 	private static final String CRIME_DATE = "date";
 	private static final String CRIME_TIME = "time";
+	private static final String CRIME_PHOTO = "photo";
+	private static final String CRIME_PHOTO_FILENAME = "filename";
 	
 	public static void saveCrimes(
 	    Context context, @SuppressWarnings("SameParameterValue") String filename, ArrayList<Crime> crimes)
@@ -126,6 +130,11 @@ public class CriminalIntentJsonSerializer {
 		result.put(CRIME_SOLVED, c.isSolved());
 		result.put(CRIME_DATE, c.getDate().getTime());
 		result.put(CRIME_TIME, c.getTime().getTime());
+		if (c.getPhoto() != null) {
+			JSONObject photo = new JSONObject();
+	  	photo.put(CRIME_PHOTO_FILENAME, c.getPhoto().getFilename());
+			result.put(CRIME_PHOTO, photo);
+		}
 		return result;
 	}
 	
@@ -141,10 +150,17 @@ public class CriminalIntentJsonSerializer {
 	private static Crime fromJson(JSONObject json) 
 	    throws JSONException {
 		UUID id = UUID.fromString(json.getString(CRIME_ID));
-		return new Crime(id)
+		Crime c =  new Crime(id)
 		    .setTitle(json.getString(CRIME_TITLE))
 		    .setSolved(json.getBoolean(CRIME_SOLVED))
 		    .setDate(new Date(json.getLong(CRIME_DATE)))
 		    .setTime(new Date(json.getLong(CRIME_TIME)));
+		
+		if (json.has(CRIME_PHOTO)) {
+			JSONObject photo = json.getJSONObject(CRIME_PHOTO);
+			c.setPhoto(new Photo(photo.getString(CRIME_PHOTO_FILENAME)));
+		}
+		
+		return c;
 	}
 }

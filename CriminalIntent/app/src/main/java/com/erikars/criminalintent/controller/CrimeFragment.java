@@ -33,6 +33,9 @@ import android.os.Build;
 import android.hardware.Camera;
 import android.widget.ImageButton;
 import android.util.Log;
+import com.erikars.criminalintent.model.Photo;
+import android.widget.ImageView;
+import android.graphics.drawable.BitmapDrawable;
 
 public class CrimeFragment extends Fragment {
 	private static final String TAG = CrimeFragment.class.getSimpleName();
@@ -46,6 +49,7 @@ public class CrimeFragment extends Fragment {
   
   private Crime mCrime;
 	private Button mDateTimeButton;
+	private ImageView mPhotoView;
   
   public static CrimeFragment newInstance(UUID crimeId) {
     Preconditions.checkNotNull(crimeId);
@@ -80,6 +84,7 @@ public class CrimeFragment extends Fragment {
     initDateTimePicker(v);
     initSolvedButton(v);
 		initTakePictureButton(v);
+		initPhotoView(v);
     
     return v;
   }
@@ -152,6 +157,27 @@ public class CrimeFragment extends Fragment {
 			takePicture.setEnabled(false);
 		}
 	}
+	
+	private void initPhotoView(View v) {
+		mPhotoView = (ImageView) v.findViewById(R.id.crime_photoPreview);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		showPhoto();
+	}
+	
+	private void showPhoto() {
+		// (Re)set the image to use the crime's photo 
+		Photo p = mCrime.getPhoto();
+		BitmapDrawable b = null;
+		if (p != null) {
+			String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+			b = PictureUtils.getScaledDrawable(getActivity(), path);
+		}
+		mPhotoView.setImageDrawable(b);
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -181,8 +207,9 @@ public class CrimeFragment extends Fragment {
 	private void handlePhotoResult(Intent data) {
 		String filename = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
 		if (filename != null) {
-			Log.i(TAG, "File saved to " + filename);
+			mCrime.setPhoto(new Photo(filename));
 		}
+		showPhoto();
 	}
 
 	@Override

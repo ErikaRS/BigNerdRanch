@@ -12,6 +12,7 @@ public class Crime {
   private Date mDate = new Date();
 	private Date mTime = new Date();
   private boolean mSolved;
+	private Photo mPhoto;
   
   public Crime() {
     this(UUID.randomUUID());
@@ -76,6 +77,15 @@ public class Crime {
   public boolean isSolved() {
     return mSolved;
   }
+	
+	public Crime setPhoto(Photo photo) {
+		mPhoto = photo;
+		return this;
+	}
+	
+	public Photo getPhoto() {
+		return mPhoto;
+	}
 
   @Override
   public String toString() {
