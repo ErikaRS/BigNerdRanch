@@ -59,7 +59,7 @@ public class CrimeListFragment extends ListFragment {
   @TargetApi(11)
 	private void initContextMenu(View v) {
 		ListView listView = (ListView) v.findViewById(android.R.id.list);
-		if (isPreHoneycomb()) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			// Floating context menu on older versions
 			registerForContextMenu(listView);
 		} else {
@@ -68,6 +68,7 @@ public class CrimeListFragment extends ListFragment {
 		}
 	}
 
+  @TargetApi(11)
 	private void initContextualContextMenu(ListView listView) {
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
@@ -157,7 +158,6 @@ public class CrimeListFragment extends ListFragment {
 		}
 	}
 
-	@TargetApi(11)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -193,9 +193,6 @@ public class CrimeListFragment extends ListFragment {
 	}
 
 	private void setSubtitle() {
-		//if (isPreHoneycomb()) {
-		//	return;
-		//}
 		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		if (mSubtitleShown) {
 			// Show subtitle 
@@ -204,10 +201,6 @@ public class CrimeListFragment extends ListFragment {
 			// Hide subtitle 
 			activity.getSupportActionBar().setSubtitle(null);
 		}
-	}
-
-	private boolean isPreHoneycomb() {
-		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB;
 	}
 
 	/**
