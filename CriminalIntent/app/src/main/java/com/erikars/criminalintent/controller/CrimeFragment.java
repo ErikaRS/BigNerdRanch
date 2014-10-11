@@ -32,25 +32,22 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.hardware.Camera;
 import android.widget.ImageButton;
-import android.util.Log;
 import com.erikars.criminalintent.model.Photo;
 import android.widget.ImageView;
 import android.graphics.drawable.BitmapDrawable;
 
 public class CrimeFragment extends Fragment {
-	private static final String TAG = CrimeFragment.class.getSimpleName();
-	
 	private static final String DIALOG_DATE_TIME = "date_time";
 
 	private static final int REQUEST_DATE_TIME = 0;
 	private static final int REQUEST_PHOTO = 1;
-	
+
   public static final String EXTRA_CRIME_ID = "com.erikars.criminalintent.crime_id";
-  
+
   private Crime mCrime;
 	private Button mDateTimeButton;
 	private ImageView mPhotoView;
-  
+
   public static CrimeFragment newInstance(UUID crimeId) {
     Preconditions.checkNotNull(crimeId);
 		Bundle args = new Bundle();
@@ -64,22 +61,13 @@ public class CrimeFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		UUID id = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
-    mCrime = CrimeLab.get(getActivity()).getCrime(id);
+    initCrime();
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_crime, container, false /* attachToRoot */);
-    if (NavUtils.getParentActivityName(getActivity()) != null) {
-			((ActionBarActivity) getActivity()).getSupportActionBar()
-			    .setDisplayHomeAsUpEnabled(true);
-		}
-		
-		if (mCrime == null) {
-			mCrime = new Crime();
-		}
-    
+    initActionBar();
     initTitle(v);
     initDateTimePicker(v);
     initSolvedButton(v);
@@ -88,7 +76,73 @@ public class CrimeFragment extends Fragment {
     
     return v;
   }
-	
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    showPhoto();
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    CrimeLab.get(getActivity()).saveCrimes();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    PictureUtils.cleanImageView(mPhotoView);
+  }
+
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.fragment_crime, menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        goUp();
+        return true;
+      case R.id.menu_item_delete_crime:
+        CrimeLab.get(getActivity()).deleteCrime(mCrime);
+        goUp();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode != Activity.RESULT_OK) return;
+    switch (requestCode) {
+      case REQUEST_DATE_TIME:
+        handleDateTimeResult(data);
+        break;
+      case REQUEST_PHOTO:
+        handlePhotoResult(data);
+        break;
+    }
+  }
+
+  private void initCrime() {
+    UUID id = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
+    mCrime = CrimeLab.get(getActivity()).getCrime(id);
+    if (mCrime == null) {
+      mCrime = new Crime();
+    }
+  }
+
+  private void initActionBar() {
+    if (NavUtils.getParentActivityName(getActivity()) != null) {
+      ((ActionBarActivity) getActivity()).getSupportActionBar()
+          .setDisplayHomeAsUpEnabled(true);
+    }
+  }
+
 	private void initTitle(View v) {
 		EditText titleField = (EditText) v.findViewById(R.id.crime_title);
     titleField.setText(mCrime.getTitle());
@@ -162,12 +216,6 @@ public class CrimeFragment extends Fragment {
 		mPhotoView = (ImageView) v.findViewById(R.id.crime_photoPreview);
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		showPhoto();
-	}
-	
 	private void showPhoto() {
 		// (Re)set the image to use the crime's photo 
 		Photo p = mCrime.getPhoto();
@@ -177,19 +225,6 @@ public class CrimeFragment extends Fragment {
 			b = PictureUtils.getScaledDrawable(getActivity(), path);
 		}
 		mPhotoView.setImageDrawable(b);
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode != Activity.RESULT_OK) return;
-		switch (requestCode) {
-			case REQUEST_DATE_TIME:
-	  		handleDateTimeResult(data);
-				break;
-			case REQUEST_PHOTO:
-				handlePhotoResult(data);
-				break;
-		}
 	}
 
 	private void handleDateTimeResult(Intent data) {
@@ -212,39 +247,13 @@ public class CrimeFragment extends Fragment {
 		showPhoto();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				goUp();
-				return true;
-			case R.id.menu_item_delete_crime:
-				CrimeLab.get(getActivity()).deleteCrime(mCrime);
-				goUp();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
 	private void goUp() {
 		if (NavUtils.getParentActivityName(getActivity()) != null) {
 			NavUtils.navigateUpFromSameTask(getActivity());
 		}
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.fragment_crime, menu);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		CrimeLab.get(getActivity()).saveCrimes();
-	}
-
-	private void updateDateTime() {
+  private void updateDateTime() {
 		Preconditions.checkNotNull(mCrime);
 		Preconditions.checkNotNull(mDateTimeButton);
 		mDateTimeButton.setText(mCrime.getFormattedDateTime());
