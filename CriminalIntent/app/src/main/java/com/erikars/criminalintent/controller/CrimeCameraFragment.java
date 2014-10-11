@@ -24,8 +24,12 @@ import android.content.Intent;
 
 public class CrimeCameraFragment extends Fragment {
 	private static final String TAG = CrimeCameraFragment.class.getSimpleName();
+
+  private static final int CAMERA_ID = 0;
 	
 	public static final String EXTRA_PHOTO_FILENAME = "com.erikars.criminalintent.photo_filename";
+  public static final String EXTRA_PHOTO_ORIENTATION
+      = "com.erikars.criminalintent.photo_orientation";
 	
 	private Camera mCamera;
 	private View mProgressContainer;
@@ -52,8 +56,9 @@ public class CrimeCameraFragment extends Fragment {
   				mProgressContainer.setVisibility(View.VISIBLE);
 	  		}
   		};
-		
+
 		final Camera.PictureCallback saveJpeg = new Camera.PictureCallback() {
+        @TargetApi(10)
 	  		@Override
 	  		public void onPictureTaken(byte[] data, Camera camera) {
 		  		String filename = UUID.randomUUID().toString() + ".jpg";
@@ -80,6 +85,13 @@ public class CrimeCameraFragment extends Fragment {
 					if (success) {
 						Intent result = new Intent();
 						result.putExtra(EXTRA_PHOTO_FILENAME, filename);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+              Camera.CameraInfo info = new Camera.CameraInfo();
+              mCamera.getCameraInfo(CAMERA_ID, info);
+              result.putExtra(EXTRA_PHOTO_ORIENTATION, info.orientation);
+            }
+
 						getActivity().setResult(Activity.RESULT_OK, result);
 					} else {
 						getActivity().setResult(Activity.RESULT_CANCELED);
@@ -182,7 +194,7 @@ public class CrimeCameraFragment extends Fragment {
 		super.onResume();
 		try {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				mCamera = Camera.open(0);
+				mCamera = Camera.open(CAMERA_ID);
 			} else {
 				mCamera = Camera.open();
 			}

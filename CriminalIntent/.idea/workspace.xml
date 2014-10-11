@@ -48,12 +48,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <file leaf-file-name="CrimeCameraFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeCameraFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="555">
-              <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1290" max-vertical-offset="2955">
+              <caret line="112" column="2" selection-start-line="112" selection-start-column="2" selection-end-line="112" selection-end-column="2" />
+              <folding>
+                <element signature="e#1909#3183#0" expanded="true" />
+                <element signature="e#3176#3177#0" expanded="true" />
+                <element signature="e#3305#3479#0" expanded="true" />
+                <element signature="e#3473#3474#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,9 +66,23 @@
       <file leaf-file-name="CrimeFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="3870">
-              <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3015" max-vertical-offset="4050">
+              <caret line="230" column="2" selection-start-line="230" selection-start-column="2" selection-end-line="230" selection-end-column="2" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImageFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/ImageFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="810">
+              <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -71,21 +90,38 @@
       <file leaf-file-name="PictureUtils.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/PictureUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="1200">
-              <caret line="28" column="2" selection-start-line="28" selection-start-column="2" selection-end-line="28" selection-end-column="2" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1380">
+              <caret line="21" column="2" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#431#463#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CrimeListFragment.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeListFragment.java">
+      <file leaf-file-name="CriminalIntentJsonSerializer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/serialization/CriminalIntentJsonSerializer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.022727273" vertical-offset="930" max-vertical-offset="3765">
-              <caret line="61" column="31" selection-start-line="61" selection-start-column="31" selection-end-line="61" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.77272725" vertical-offset="1965" max-vertical-offset="2685">
+              <caret line="165" column="6" selection-start-line="165" selection-start-column="6" selection-end-line="165" selection-end-column="6" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1071#1104#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Photo.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/model/Photo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <folding>
+                <element signature="e#273#274#0" expanded="true" />
+                <element signature="e#296#297#0" expanded="true" />
+                <element signature="e#329#330#0" expanded="true" />
+                <element signature="e#358#359#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -799,24 +835,46 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_crime.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/model/Crime.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/SingleFragmentActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/serialization/CriminalIntentJsonSerializer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/TimePickerFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/model/CrimeLab.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/DatePickerFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/DateTimeChoiceFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_fragment.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/PictureUtils.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeFragment.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeListFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/model/Photo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeCameraFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/PictureUtils.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/ImageFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/serialization/CriminalIntentJsonSerializer.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1925" />
-    <option name="y" value="59" />
+    <option name="x" value="1926" />
+    <option name="y" value="60" />
     <option name="width" value="1623" />
     <option name="height" value="1135" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Android Lint</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -963,6 +1021,44 @@
               <option name="myItemId" value="criminalintent" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serialization" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CriminalIntent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CriminalIntent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criminalintent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1012,7 +1108,7 @@
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5554" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
+    <property name="options.lastSelected" value="Errors" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -1198,7 +1294,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1925" y="59" width="1623" height="1135" extended-state="0" />
+    <frame x="1926" y="60" width="1623" height="1135" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1252,33 +1348,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2415" max-vertical-offset="3435">
-          <caret line="191" column="9" selection-start-line="191" selection-start-column="9" selection-end-line="191" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1071#1104#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="375">
-          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="555">
-          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/serialization/CriminalIntentJsonSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="2205">
@@ -1481,17 +1550,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/serialization/CriminalIntentJsonSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="2340">
-          <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1304#1343#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/TimePickerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="870">
@@ -1639,22 +1697,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/PictureUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="1200">
-          <caret line="28" column="2" selection-start-line="28" selection-start-column="2" selection-end-line="28" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="3870">
-          <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="555">
@@ -1681,11 +1723,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.022727273" vertical-offset="930" max-vertical-offset="3765">
-          <caret line="61" column="31" selection-start-line="61" selection-start-column="31" selection-end-line="61" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="3765">
+          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1071#1104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/model/Photo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#273#274#0" expanded="true" />
+            <element signature="e#296#297#0" expanded="true" />
+            <element signature="e#329#330#0" expanded="true" />
+            <element signature="e#358#359#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeCameraFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1290" max-vertical-offset="2955">
+          <caret line="112" column="2" selection-start-line="112" selection-start-column="2" selection-end-line="112" selection-end-column="2" />
+          <folding>
+            <element signature="e#1909#3183#0" expanded="true" />
+            <element signature="e#3176#3177#0" expanded="true" />
+            <element signature="e#3305#3479#0" expanded="true" />
+            <element signature="e#3473#3474#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/PictureUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1380">
+          <caret line="21" column="2" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#431#463#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/ImageFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="810">
+          <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/controller/CrimeFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3015" max-vertical-offset="4050">
+          <caret line="230" column="2" selection-start-line="230" selection-start-column="2" selection-end-line="230" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/erikars/criminalintent/serialization/CriminalIntentJsonSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.77272725" vertical-offset="1965" max-vertical-offset="2685">
+          <caret line="165" column="6" selection-start-line="165" selection-start-column="6" selection-end-line="165" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

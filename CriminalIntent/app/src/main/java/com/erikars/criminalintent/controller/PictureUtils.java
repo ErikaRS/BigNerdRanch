@@ -3,6 +3,7 @@ package com.erikars.criminalintent.controller;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Display;
 import android.widget.ImageView;
@@ -13,11 +14,11 @@ public class PictureUtils {
 	 * to fit the current window size.
 	 */
 	@SuppressWarnings("deprecation")
-	public static BitmapDrawable getScaledDrawable(Activity a, String path) {
-		Dimensions dest = getDestinationDimensions(a);
+	public static BitmapDrawable getScaledDrawable(Activity a, String path, int orientation) {
+		Dimensions dst = getDestinationDimensions(a);
 		Dimensions src = getSourceDimensions(path);
-		int inSampleSize = getScalingSampleSize(src, dest);
-		return loadScaledDrawable(a, path, inSampleSize);
+		int inSampleSize = getScalingSampleSize(src, dst);
+		return loadScaledDrawable(a, path, inSampleSize, orientation);
 	}
 
   public static void cleanImageView(ImageView imageView) {
@@ -44,26 +45,32 @@ public class PictureUtils {
     return new Dimensions(options.outWidth, options.outHeight);
 	}
 	
-	private static int getScalingSampleSize(Dimensions src, Dimensions dest) {
+	private static int getScalingSampleSize(Dimensions src, Dimensions dst) {
 	  // Default is no scaling 
 		int inSampleSize = 1;
 		
 		// If the image needs scaling, scale so that the smaller dimension 
 		// fits the screen 
-		if (src.width > dest.width || src.height > dest.height) {
+		if (src.width > dst.width || src.height > dst.height) {
 			if (src.width > src.height) {
-				inSampleSize = Math.round(src.height / dest.height);
+				inSampleSize = Math.round(src.height / dst.height);
 			} else {
-				inSampleSize = Math.round(src.width / dest.width);
+				inSampleSize = Math.round(src.width / dst.width);
 			}
 		}
 		return inSampleSize;
 	}
 	
-	private static BitmapDrawable loadScaledDrawable(Activity a, String path, int inSampleSize) {
+	private static BitmapDrawable loadScaledDrawable(
+      Activity a, String path, int inSampleSize, int orientation) {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = inSampleSize;
 		Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+    Matrix matrix = new Matrix();
+    matrix.postRotate(orientation);
+    bitmap = Bitmap.createBitmap(
+        bitmap, 0 /* x-coordinate */, 0 /* y-coordinate */, bitmap.getWidth(), bitmap.getHeight(),
+        matrix, true /* don't filter */);
 		return new BitmapDrawable(a.getResources(), bitmap);
 	}
 	

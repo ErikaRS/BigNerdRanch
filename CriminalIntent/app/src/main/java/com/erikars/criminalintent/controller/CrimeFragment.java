@@ -38,6 +38,7 @@ import android.graphics.drawable.BitmapDrawable;
 
 public class CrimeFragment extends Fragment {
 	private static final String DIALOG_DATE_TIME = "date_time";
+  private static final String DIALOG_IMAGE = "image";
 
 	private static final int REQUEST_DATE_TIME = 0;
 	private static final int REQUEST_PHOTO = 1;
@@ -214,6 +215,19 @@ public class CrimeFragment extends Fragment {
 	
 	private void initPhotoView(View v) {
 		mPhotoView = (ImageView) v.findViewById(R.id.crime_photoPreview);
+    mPhotoView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Photo p = mCrime.getPhoto();
+        if (p == null) {
+          return;
+        }
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+        ImageFragment.newInstance(path, p.getOrientation()).show(fm, DIALOG_IMAGE);
+      }
+    });
 	}
 
 	private void showPhoto() {
@@ -222,7 +236,7 @@ public class CrimeFragment extends Fragment {
 		BitmapDrawable b = null;
 		if (p != null) {
 			String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
-			b = PictureUtils.getScaledDrawable(getActivity(), path);
+			b = PictureUtils.getScaledDrawable(getActivity(), path, p.getOrientation());
 		}
 		mPhotoView.setImageDrawable(b);
 	}
@@ -241,8 +255,9 @@ public class CrimeFragment extends Fragment {
 
 	private void handlePhotoResult(Intent data) {
 		String filename = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
+    int orientation = data.getIntExtra(CrimeCameraFragment.EXTRA_PHOTO_ORIENTATION, 0);
 		if (filename != null) {
-			mCrime.setPhoto(new Photo(filename));
+			mCrime.setPhoto(new Photo(filename, orientation));
 		}
 		showPhoto();
 	}

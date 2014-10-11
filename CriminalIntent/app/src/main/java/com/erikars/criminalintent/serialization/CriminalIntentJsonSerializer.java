@@ -34,7 +34,8 @@ public class CriminalIntentJsonSerializer {
 	private static final String CRIME_TIME = "time";
 	private static final String CRIME_PHOTO = "photo";
 	private static final String CRIME_PHOTO_FILENAME = "filename";
-	
+  private static final String CRIME_PHOTO_ORIENTATION = "orientation";
+
 	public static void saveCrimes(
 	    Context context, @SuppressWarnings("SameParameterValue") String filename, ArrayList<Crime> crimes)
 	    throws IOException, JSONException {
@@ -133,6 +134,7 @@ public class CriminalIntentJsonSerializer {
 		if (c.getPhoto() != null) {
 			JSONObject photo = new JSONObject();
 	  	photo.put(CRIME_PHOTO_FILENAME, c.getPhoto().getFilename());
+      photo.put(CRIME_PHOTO_ORIENTATION, c.getPhoto().getOrientation());
 			result.put(CRIME_PHOTO, photo);
 		}
 		return result;
@@ -158,7 +160,12 @@ public class CriminalIntentJsonSerializer {
 		
 		if (json.has(CRIME_PHOTO)) {
 			JSONObject photo = json.getJSONObject(CRIME_PHOTO);
-			c.setPhoto(new Photo(photo.getString(CRIME_PHOTO_FILENAME)));
+      int orientation = 0;
+      if (json.has(CRIME_PHOTO_ORIENTATION)) {
+        orientation = photo.getInt(CRIME_PHOTO_ORIENTATION);
+      }
+			c.setPhoto(
+          new Photo(photo.getString(CRIME_PHOTO_FILENAME), orientation));
 		}
 		
 		return c;
