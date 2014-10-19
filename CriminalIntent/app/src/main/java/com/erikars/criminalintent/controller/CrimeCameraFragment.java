@@ -1,12 +1,16 @@
 package com.erikars.criminalintent.controller;
+
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -18,9 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import java.io.FileNotFoundException;
-import android.app.Activity;
-import android.content.Intent;
 
 public class CrimeCameraFragment extends Fragment {
 	private static final String TAG = CrimeCameraFragment.class.getSimpleName();
@@ -33,6 +34,11 @@ public class CrimeCameraFragment extends Fragment {
 	
 	private Camera mCamera;
 	private View mProgressContainer;
+  
+  // Manually track the angle of the display. We can't use the display 
+  // orientation directly because it may be fixed 
+  private OrthogonalOrienatationEventListener mDisplayAngleListener;
+  private int mDisplayAngle = OrientationEventListener.ORIENTATION_UNKNOWN;
 	
 	public static CrimeCameraFragment newInstance() {
 		return new CrimeCameraFragment();
@@ -89,7 +95,12 @@ public class CrimeCameraFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
               Camera.CameraInfo info = new Camera.CameraInfo();
               mCamera.getCameraInfo(CAMERA_ID, info);
-              result.putExtra(EXTRA_PHOTO_ORIENTATION, info.orientation);
+							// The image should be rotated clockwise from device orientation 
+							// relative to the camera orientation. This is because the camera
+							// saves pictures with the camera orientation, so we should rotate 
+							// relative to that, not the display orientation.
+							int rotation = ((mDisplayAngle + 360) + info.orientation) % 360;
+              result.putExtra(EXTRA_PHOTO_ORIENTATION, rotation);
             }
 
 						getActivity().setResult(Activity.RESULT_OK, result);
@@ -192,23 +203,46 @@ public class CrimeCameraFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		try {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				mCamera = Camera.open(CAMERA_ID);
-			} else {
-				mCamera = Camera.open();
-			}
-		} catch (Exception e) {
-			releaseCamera();
-			getActivity().finish();
-		}
+    startTrackingDisplayAngle();
+		openCamera();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+    stopTrackingDisplayAngle();
 		releaseCamera();
 	}
+  
+  private void startTrackingDisplayAngle() {
+    mDisplayAngleListener = new OrthogonalOrienatationEventListener(getActivity()) {
+      @Override
+      public void onOrientationChanged(int angle) {
+        mDisplayAngle = angle;
+      }
+    };
+    mDisplayAngleListener.enable();
+  }
+
+  private void stopTrackingDisplayAngle() {
+    if (mDisplayAngleListener != null) {
+      mDisplayAngleListener.disable();
+      mDisplayAngleListener = null;
+    }
+  }
+  
+  private void openCamera() {
+    try {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+        mCamera = Camera.open(CAMERA_ID);
+      } else {
+        mCamera = Camera.open();
+      }
+    } catch (Exception e) {
+      releaseCamera();
+      getActivity().finish();
+    }
+  }
 	
 	private void releaseCamera() {
 		if (mCamera != null) {
