@@ -7,8 +7,18 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Display;
 import android.widget.ImageView;
+import com.erikars.criminalintent.model.Photo;
 
 public class PictureUtils {
+  
+  public static BitmapDrawable getScaledPhoto(Activity a, Photo p) {
+    if (p == null) {
+      return null;
+    }
+    String path = a.getFileStreamPath(p.getFilename()).getAbsolutePath();
+    return getScaledDrawable(a, path, p.getOrientation());
+  }
+  
 	/**
 	 * Get a BitmapDrawable from a local file that is scaled down 
 	 * to fit the current window size.
@@ -31,7 +41,17 @@ public class PictureUtils {
     b.getBitmap().recycle();
     imageView.setImageDrawable(null);
   }
-
+  
+  public static void deletePhoto(Activity a, Photo photo) {
+    if (photo == null) {
+      return;
+    }
+    String path = photo.getFilename();
+    if (path != null) {
+      a.deleteFile(path);
+    }
+  }
+	
 	private static Dimensions getDestinationDimensions(Activity a) {
 		Display display = a.getWindowManager().getDefaultDisplay();
 		return new Dimensions(display.getWidth(), display.getHeight());
@@ -66,6 +86,10 @@ public class PictureUtils {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = inSampleSize;
 		Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+		if (bitmap == null) {
+			return null;
+		}
+		
     Matrix matrix = new Matrix();
     matrix.postRotate(orientation);
     bitmap = Bitmap.createBitmap(

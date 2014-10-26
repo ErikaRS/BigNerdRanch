@@ -73,6 +73,16 @@ public class CrimeLab {
 	
 	public void deleteCrime(Crime c) {
 		mCrimes.remove(c);
+    
+    // Duplicate with photo utils.
+    // TODO: Move PhotoUtils so it can be used from here
+    if (c.getPhoto() == null) {
+      return;
+    }
+    String path = c.getPhoto().getFilename();
+    if (path != null) {
+      mAppContext.deleteFile(path);
+    }
 	}
 	
 	public void saveCrimes() {

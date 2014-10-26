@@ -14,6 +14,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,8 @@ import com.erikars.criminalintent.model.Photo;
 import com.google.common.base.Preconditions;
 import java.util.Date;
 import java.util.UUID;
+import android.view.View.OnLongClickListener;
+import android.view.ActionMode;
 
 public class CrimeFragment extends Fragment {
 	private static final String DIALOG_DATE_TIME = "date_time";
@@ -48,6 +51,7 @@ public class CrimeFragment extends Fragment {
   private Crime mCrime;
 	private Button mDateTimeButton;
 	private ImageView mPhotoView;
+  private ActionMode mActionMode = null;
 
   public static CrimeFragment newInstance(UUID crimeId) {
     Preconditions.checkNotNull(crimeId);
@@ -115,6 +119,24 @@ public class CrimeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
   }
+	
+	@Override
+	public void onCreateContextMenu(
+		ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		getActivity().getMenuInflater().inflate(R.menu.crime_photo_context, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_item_delete_photo:
+				deletePhoto();
+				showPhoto();
+				return true;
+			default:
+		    return super.onContextItemSelected(item);
+		}
+	}
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,15 +254,70 @@ public class CrimeFragment extends Fragment {
 
 	private void showPhoto() {
 		// (Re)set the image to use the crime's photo 
-		Photo p = mCrime.getPhoto();
-		BitmapDrawable b = null;
-		if (p != null) {
-			String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
-			b = PictureUtils.getScaledDrawable(getActivity(), path, p.getOrientation());
+		BitmapDrawable b = PictureUtils.getScaledPhoto(getActivity(), mCrime.getPhoto());
+		if (b != null) {
+		  initContextMenu();
+		} else {
+		  clearContextMenu();
 		}
 		mPhotoView.setImageDrawable(b);
 	}
+  
+  private void initContextMenu() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+      // Floating context menu on older versions
+      registerForContextMenu(mPhotoView);
+    } else {
+      // Contextual context menu when supported
+      initContextualContextMenu();
+		}
+  }
+  
+  @TargetApi(11)
+	private void initContextualContextMenu() {
+    mPhotoView.setOnLongClickListener(new OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+          if (mActionMode != null) {
+            return false;
+          }
+          
+          getActivity().startActionMode(new ActionMode.Callback() {
+              @Override
+              public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.crime_photo_context, menu);
+                return true;
+              }
 
+              @Override
+              public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+              }
+
+              @Override
+              public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return onContextItemSelected(item);
+              }
+
+              @Override
+              public void onDestroyActionMode(ActionMode mode) {}
+            });
+          
+          return true;
+        }
+      });
+  }
+  
+  private void clearContextMenu() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+      // Floating context menu on older versions
+      unregisterForContextMenu(mPhotoView);
+    } else {
+      // Contextual context menu
+      mPhotoView.setOnLongClickListener(null);
+		}
+  }
+  
 	private void handleDateTimeResult(Intent data) {
 		Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
 		if (date != null) {
@@ -257,9 +334,15 @@ public class CrimeFragment extends Fragment {
 		String filename = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
     int orientation = data.getIntExtra(CrimeCameraFragment.EXTRA_PHOTO_ORIENTATION, 0);
 		if (filename != null) {
+			deletePhoto();
 			mCrime.setPhoto(new Photo(filename, orientation));
 		}
 		showPhoto();
+	}
+
+	private void deletePhoto() {
+    PictureUtils.deletePhoto(getActivity(), mCrime.getPhoto());
+		mCrime.setPhoto(null);
 	}
 
 	private void goUp() {
