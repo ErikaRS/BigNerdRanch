@@ -37,7 +37,8 @@ import com.google.common.base.Preconditions;
 import java.util.Date;
 import java.util.UUID;
 import android.view.View.OnLongClickListener;
-import android.view.ActionMode;
+import android.graphics.PorterDuff;
+import android.support.v7.view.ActionMode;
 
 public class CrimeFragment extends Fragment {
 	private static final String DIALOG_DATE_TIME = "date_time";
@@ -282,7 +283,7 @@ public class CrimeFragment extends Fragment {
             return false;
           }
           
-          getActivity().startActionMode(new ActionMode.Callback() {
+          ((ActionBarActivity) getActivity()).startSupportActionMode(new ActionMode.Callback() {
               @Override
               public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 mode.getMenuInflater().inflate(R.menu.crime_photo_context, menu);
@@ -302,6 +303,7 @@ public class CrimeFragment extends Fragment {
               @Override
               public void onDestroyActionMode(ActionMode mode) {}
             });
+           mPhotoView.setSelected(true);
           
           return true;
         }
