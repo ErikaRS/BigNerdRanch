@@ -5,6 +5,9 @@ import java.util.Locale;
 
 import android.os.Build;
 import android.text.format.DateFormat;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import android.support.annotation.Nullable;
 
 public class Crime {
   private final UUID mId;
@@ -13,6 +16,7 @@ public class Crime {
 	private Date mTime = new Date();
   private boolean mSolved;
 	private Photo mPhoto;
+  private String mSuspect;
   
   public Crime() {
     this(UUID.randomUUID());
@@ -86,7 +90,18 @@ public class Crime {
 	public Photo getPhoto() {
 		return mPhoto;
 	}
-
+  
+  public @Nullable Crime setSuspect(String suspect) {
+    mSuspect = Strings.isNullOrEmpty(suspect)
+        ? null 
+        : suspect;
+    return this;
+  }
+  
+  public String getSuspect() {
+    return mSuspect;
+  }
+  
   @Override
   public String toString() {
     return mTitle;
