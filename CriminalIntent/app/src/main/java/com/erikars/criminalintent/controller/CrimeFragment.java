@@ -2,16 +2,23 @@ package com.erikars.criminalintent.controller;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
@@ -21,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -34,15 +42,10 @@ import com.erikars.criminalintent.model.Crime;
 import com.erikars.criminalintent.model.CrimeLab;
 import com.erikars.criminalintent.model.Photo;
 import com.google.common.base.Preconditions;
-import java.util.Date;
-import java.util.UUID;
-import android.view.View.OnLongClickListener;
-import android.graphics.PorterDuff;
-import android.support.v7.view.ActionMode;
 import com.google.common.base.Strings;
-import android.provider.ContactsContract;
-import android.net.Uri;
-import android.database.Cursor;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
 	private static final String DIALOG_DATE_TIME = "date_time";
@@ -87,6 +90,7 @@ public class CrimeFragment extends Fragment {
 		initPhotoView(v);
     initReportButton(v);
     initSuspectButton(v);
+    initCallButton(v);
     
     return v;
   }
@@ -293,6 +297,33 @@ public class CrimeFragment extends Fragment {
         mSuspectButton.setText(mCrime.getSuspect());
       }
   }
+  
+  private void initCallButton(View v) {
+    Button callButton = (Button) v.findViewById(R.id.crime_callButton);
+    
+    // Disable call button if calls are not available on the device
+    Intent i = new Intent(Intent.ACTION_DIAL);
+    PackageManager pm = getActivity().getPackageManager();
+    List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+    if (activities.size() == 0) {
+      callButton.setEnabled(false);
+      return;
+    }
+    
+    callButton.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent i = new Intent(Intent.ACTION_DIAL);
+          if (mCrime.hasSuspect()) { 
+            // Call the suspect instead of using a blank dialer
+            Uri contact = Uri.withAppendedPath(
+                ContactsContract.Contacts.CONTENT_LOOKUP_URI, mCrime.getSuspectLookupKey());
+            i.setData(contact);
+          }
+          startActivity(i);
+        }
+    });
+  }
 
 	private void showPhoto() {
 		// (Re)set the image to use the crime's photo 
@@ -385,14 +416,19 @@ public class CrimeFragment extends Fragment {
   
   private void handleSuspectResult(Intent data) {
     Uri contactData = data.getData();
-    String[] mask = new String[] { ContactsContract.Contacts.DISPLAY_NAME };
+    String[] mask = new String[] { 
+        ContactsContract.Contacts.LOOKUP_KEY,
+        ContactsContract.Contacts.DISPLAY_NAME 
+      };
     Cursor c = getActivity().getContentResolver().query(contactData, mask, null, null, null);
     if (c.getCount() == 0) {
       c.close();
       return;
     }
     c.moveToFirst();
-    String suspect = c.getString(0);
+    String lookupKey = c.getString(0);
+    mCrime.setSuspectLookupKey(lookupKey);
+    String suspect = c.getString(1);
     mCrime.setSuspect(suspect);
     mSuspectButton.setText(suspect);
     c.close();

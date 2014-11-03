@@ -35,6 +35,7 @@ public class CriminalIntentJsonSerializer {
 	private static final String CRIME_PHOTO_FILENAME = "filename";
   private static final String CRIME_PHOTO_ORIENTATION = "orientation";
   private static final String CRIME_SUSPECT = "suspect";
+  private static final String CRIME_SUSPECT_CONTACT_ID = "suspect_contact_id";
 
 	public static void saveCrimes(
 	    Context context, @SuppressWarnings("SameParameterValue") String filename, ArrayList<Crime> crimes)
@@ -131,7 +132,10 @@ public class CriminalIntentJsonSerializer {
 		result.put(CRIME_SOLVED, c.isSolved());
 		result.put(CRIME_DATE, c.getDate().getTime());
 		result.put(CRIME_TIME, c.getTime().getTime());
-    result.put(CRIME_SUSPECT, c.getSuspect());
+    if (c.hasSuspect()) {
+      result.put(CRIME_SUSPECT, c.getSuspect());
+      result.put(CRIME_SUSPECT_CONTACT_ID, c.getSuspectLookupKey());
+    }
 		if (c.getPhoto() != null) {
 			JSONObject photo = new JSONObject();
 	  	photo.put(CRIME_PHOTO_FILENAME, c.getPhoto().getFilename());
@@ -158,8 +162,9 @@ public class CriminalIntentJsonSerializer {
 		    .setSolved(json.getBoolean(CRIME_SOLVED))
 		    .setDate(new Date(json.getLong(CRIME_DATE)))
 		    .setTime(new Date(json.getLong(CRIME_TIME)))
-        .setSuspect(json.optString(CRIME_SUSPECT, ""));
-		
+        .setSuspect(json.optString(CRIME_SUSPECT, null))
+        .setSuspectLookupKey(json.optString(CRIME_SUSPECT_CONTACT_ID, null));
+
 		if (json.has(CRIME_PHOTO)) {
 			JSONObject photo = json.getJSONObject(CRIME_PHOTO);
       int orientation = photo.optInt(CRIME_PHOTO_ORIENTATION);

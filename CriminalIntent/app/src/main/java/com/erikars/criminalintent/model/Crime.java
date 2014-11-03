@@ -17,6 +17,7 @@ public class Crime {
   private boolean mSolved;
 	private Photo mPhoto;
   private String mSuspect;
+  private String mSuspectLookupKey;
   
   public Crime() {
     this(UUID.randomUUID());
@@ -25,7 +26,7 @@ public class Crime {
 	public Crime(UUID id) {
 		mId = id;
 	}
-
+  
   public UUID getId() {
     return mId;
   }
@@ -91,6 +92,10 @@ public class Crime {
 		return mPhoto;
 	}
   
+  public boolean hasSuspect() {
+    return mSuspect != null;
+  }
+  
   public @Nullable Crime setSuspect(String suspect) {
     mSuspect = Strings.isNullOrEmpty(suspect)
         ? null 
@@ -100,6 +105,15 @@ public class Crime {
   
   public String getSuspect() {
     return mSuspect;
+  }
+  
+  public Crime setSuspectLookupKey(String suspectLookupKey) {
+    mSuspectLookupKey = suspectLookupKey;
+    return this;
+  }
+
+  public String getSuspectLookupKey() {
+    return mSuspectLookupKey;
   }
   
   @Override
