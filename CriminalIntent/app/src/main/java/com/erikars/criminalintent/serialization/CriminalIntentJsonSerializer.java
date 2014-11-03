@@ -36,16 +36,30 @@ public class CriminalIntentJsonSerializer {
   private static final String CRIME_PHOTO_ORIENTATION = "orientation";
   private static final String CRIME_SUSPECT = "suspect";
   private static final String CRIME_SUSPECT_CONTACT_ID = "suspect_contact_id";
+  
+  // If ever the crimes can't be loaded, don't save them. That would lead to data loss 
+  private static boolean forceSkipSave = false;
 
 	public static void saveCrimes(
 	    Context context, @SuppressWarnings("SameParameterValue") String filename, ArrayList<Crime> crimes)
 	    throws IOException, JSONException {
+    if (forceSkipSave) {
+      throw new IOException("Saving skipped due to earlier error loading.");
+    }
 		write(context, filename, toJson(crimes));
 	}
 	
 	public static ArrayList<Crime> loadCrimes(Context context, String filename) 
     	throws JSONException, IOException {
-		return fromJson(read(context, filename));
+    try {
+	  	return fromJson(read(context, filename));
+    } catch (JSONException e) {
+      forceSkipSave = true;
+      throw e;
+    } catch (IOException e) {
+      forceSkipSave = true;
+      throw e;
+    }
 	}
 
 	private static void write(
