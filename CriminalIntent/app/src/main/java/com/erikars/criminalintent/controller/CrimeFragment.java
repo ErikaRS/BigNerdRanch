@@ -432,7 +432,6 @@ public class CrimeFragment extends Fragment {
     mCrime.setSuspect(suspect);
     mSuspectButton.setText(suspect);
     c.close();
-    
   }
 
 	private void deletePhoto() {
