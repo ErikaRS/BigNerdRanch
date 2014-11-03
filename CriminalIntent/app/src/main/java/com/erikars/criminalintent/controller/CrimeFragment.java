@@ -301,11 +301,7 @@ public class CrimeFragment extends Fragment {
   private void initCallButton(View v) {
     Button callButton = (Button) v.findViewById(R.id.crime_callButton);
     
-    // Disable call button if calls are not available on the device
-    Intent i = new Intent(Intent.ACTION_DIAL);
-    PackageManager pm = getActivity().getPackageManager();
-    List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
-    if (activities.size() == 0) {
+    if (!callsAreEnabled()) {
       callButton.setEnabled(false);
       return;
     }
@@ -323,6 +319,13 @@ public class CrimeFragment extends Fragment {
           startActivity(i);
         }
     });
+  }
+  
+  private boolean callsAreEnabled() {
+    Intent i = new Intent(Intent.ACTION_DIAL);
+    PackageManager pm = getActivity().getPackageManager();
+    List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+    return activities.size() > 0;
   }
 
 	private void showPhoto() {
