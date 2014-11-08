@@ -46,6 +46,7 @@ import com.google.common.base.Strings;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import android.util.Log;
 
 public class CrimeFragment extends Fragment {
 	private static final String DIALOG_DATE_TIME = "date_time";
@@ -90,7 +91,7 @@ public class CrimeFragment extends Fragment {
 		initPhotoView(v);
     initReportButton(v);
     initSuspectButton(v);
-    initCallButton(v);
+    initContactButton(v);
     
     return v;
   }
@@ -298,31 +299,35 @@ public class CrimeFragment extends Fragment {
       }
   }
   
-  private void initCallButton(View v) {
-    Button callButton = (Button) v.findViewById(R.id.crime_callButton);
+  private void initContactButton(View v) {
+    Button contactButton = (Button) v.findViewById(R.id.crime_contactButton);
     
-    if (!callsAreEnabled()) {
-      callButton.setEnabled(false);
+    if (!contactingIsEnabled()) {
+      contactButton.setEnabled(false);
       return;
     }
     
-    callButton.setOnClickListener(new OnClickListener() {
+    contactButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View v) {
-          Intent i = new Intent(Intent.ACTION_DIAL);
+          Intent i = new Intent(Intent.ACTION_VIEW);
+          Uri uri;
           if (mCrime.hasSuspect()) { 
-            // Call the suspect instead of using a blank dialer
-            Uri contact = Uri.withAppendedPath(
+            // Open the contact for the suspect
+            uri = Uri.withAppendedPath(
                 ContactsContract.Contacts.CONTENT_LOOKUP_URI, mCrime.getSuspectLookupKey());
-            i.setData(contact);
+          } else {
+            // Open the contact list 
+            uri = ContactsContract.Contacts.CONTENT_URI;
           }
+          i.setData(uri);
           startActivity(i);
         }
     });
   }
   
-  private boolean callsAreEnabled() {
-    Intent i = new Intent(Intent.ACTION_DIAL);
+  private boolean contactingIsEnabled() {
+    Intent i = new Intent(Intent.ACTION_VIEW);
     PackageManager pm = getActivity().getPackageManager();
     List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
     return activities.size() > 0;

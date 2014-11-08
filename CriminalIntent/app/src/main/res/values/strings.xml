@@ -10,7 +10,7 @@
 	<string name="delete_photo">Delete photo</string>
   <string name="crime_suspect_text">Choose Suspect</string> 
   <string name="crime_report_text">Send Crime Report</string>
-  <string name="crime_call_text">Call Suspect</string>
+  <string name="crime_contact_text">Contact Suspect</string>
   
   <string name="crimes_title">Crimes</string>
 	
