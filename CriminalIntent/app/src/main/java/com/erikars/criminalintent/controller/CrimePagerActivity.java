@@ -15,7 +15,16 @@ import com.google.common.collect.Iterables;
 import java.util.List;
 import java.util.UUID;
 
-public class CrimePagerActivity extends ActionBarActivity {
+public class CrimePagerActivity
+    extends ActionBarActivity 
+implements CrimeFragment.Callbacks {
+
+  @Override
+  public void onCrimeUpdated(Crime c) {
+    // Intentionally blank. No other fragments need to be updated 
+    // in this view 
+  }
+  
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -58,11 +58,16 @@ public class CrimeFragment extends Fragment {
 
   public static final String EXTRA_CRIME_ID = "com.erikars.criminalintent.crime_id";
 
+  private Callbacks mCallbacks;
   private Crime mCrime;
 	private Button mDateTimeButton;
 	private ImageView mPhotoView;
   private ActionMode mActionMode = null;
-  Button mSuspectButton;
+  private Button mSuspectButton;
+  
+  public interface Callbacks {
+    void onCrimeUpdated(Crime c);
+  }
 
   public static CrimeFragment newInstance(UUID crimeId) {
     Preconditions.checkNotNull(crimeId);
@@ -71,6 +76,12 @@ public class CrimeFragment extends Fragment {
     CrimeFragment cf = new CrimeFragment();
     cf.setArguments(args);
     return cf;
+  }
+
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    mCallbacks = (Callbacks) activity;
   }
   
   @Override
@@ -112,6 +123,12 @@ public class CrimeFragment extends Fragment {
   public void onStop() {
     super.onStop();
     PictureUtils.cleanImageView(mPhotoView);
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    mCallbacks = null;
   }
 
   @Override
@@ -195,6 +212,8 @@ public class CrimeFragment extends Fragment {
         @Override
         public void onTextChanged(CharSequence c, int start, int count, int after) {
           mCrime.setTitle(c.toString());
+          mCallbacks.onCrimeUpdated(mCrime);
+          getActivity().setTitle(mCrime.getTitle());
         }
 
         @Override
@@ -226,6 +245,7 @@ public class CrimeFragment extends Fragment {
         @Override
         public void onCheckedChanged(CompoundButton unused, boolean isChecked) {
           mCrime.setSolved(isChecked);
+          mCallbacks.onCrimeUpdated(mCrime);
         }
       });
 	}
@@ -418,6 +438,7 @@ public class CrimeFragment extends Fragment {
 		if (filename != null) {
 			deletePhoto();
 			mCrime.setPhoto(new Photo(filename, orientation));
+      mCallbacks.onCrimeUpdated(mCrime);
 		}
 		showPhoto();
 	}
@@ -439,12 +460,14 @@ public class CrimeFragment extends Fragment {
     String suspect = c.getString(1);
     mCrime.setSuspect(suspect);
     mSuspectButton.setText(suspect);
+    mCallbacks.onCrimeUpdated(mCrime);
     c.close();
   }
 
 	private void deletePhoto() {
     PictureUtils.deletePhoto(getActivity(), mCrime.getPhoto());
 		mCrime.setPhoto(null);
+    mCallbacks.onCrimeUpdated(mCrime);
 	}
 
 	private void goUp() {
@@ -457,6 +480,7 @@ public class CrimeFragment extends Fragment {
 		Preconditions.checkNotNull(mCrime);
 		Preconditions.checkNotNull(mDateTimeButton);
 		mDateTimeButton.setText(mCrime.getFormattedDateTime());
+    mCallbacks.onCrimeUpdated(mCrime);
 	}
   
   private String getCrimeReport() {

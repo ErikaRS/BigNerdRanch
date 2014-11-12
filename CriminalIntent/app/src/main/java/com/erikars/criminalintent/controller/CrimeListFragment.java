@@ -32,6 +32,18 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class CrimeListFragment extends ListFragment {
 	private boolean mSubtitleShown = false;
+  private Callbacks mCallbacks;
+  
+  /** Required interface for hosting activities */
+  public interface Callbacks {
+    void showCrimeDetails(Crime crime);
+  }
+
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    mCallbacks = (Callbacks) activity;
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +110,7 @@ public class CrimeListFragment extends ListFragment {
 								}
 							}
 							mode.finish();
-							adapter.notifyDataSetChanged();
+							updateUI();
 							return true;
 						default:
 							return false;
@@ -123,13 +135,19 @@ public class CrimeListFragment extends ListFragment {
   @Override
   public void onListItemClick(ListView l, View v, int position, long id) {
 		Crime c = ((CrimeAdapter) getListAdapter()).getItem(position);
-		showCrimeDetails(c);
+		mCallbacks.showCrimeDetails(c);
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
+    updateUI();
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    mCallbacks = null;
   }
 
 	@Override
@@ -150,7 +168,7 @@ public class CrimeListFragment extends ListFragment {
 		switch (item.getItemId()) {
 			case R.id.menu_item_delete_crime:
 				CrimeLab.get(getActivity()).deleteCrime(crime);
-				adapter.notifyDataSetChanged();
+				updateUI();
 				return true;
 			default:
 			  return super.onContextItemSelected(item);
@@ -182,15 +200,10 @@ public class CrimeListFragment extends ListFragment {
 	private void newCrime() {
 		Crime c = new Crime();
 		CrimeLab.get(getActivity()).addCrime(c);
-		showCrimeDetails(c);
+    updateUI();
+		mCallbacks.showCrimeDetails(c);
 	}
-
-	private void showCrimeDetails(Crime c) {
-		Intent i = new Intent(getActivity(), CrimePagerActivity.class);
-		i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
-		startActivityForResult(i, 0);
-	}
-
+    
 	private void setSubtitle() {
 		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		if (mSubtitleShown) {
@@ -216,6 +229,10 @@ public class CrimeListFragment extends ListFragment {
 			item.setTitle(R.string.show_subtitle);
 		}
 	}
+  
+  public void updateUI() {
+    ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
+  }
 
   private static class CrimeAdapter extends ArrayAdapter<Crime> {
     final Activity mActivity;
