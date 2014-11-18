@@ -7,8 +7,7 @@ public class NerdLauncherActivity extends SingleFragmentActivity {
 
   @Override
   protected Fragment createFragment() {
-    // TODO: Implement this method
-    return new Fragment();
+    return new NerdLauncherFragment();
   }
 
 }
